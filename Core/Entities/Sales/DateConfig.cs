@@ -9,6 +9,7 @@ namespace Core.Entities.Sales
         public int? Id { get; set; }
 
         //FK Commision
+        [ForeignKey(nameof(CommisionId))]
         public int? CommisionId { get; set; }
         public Commision? Commision { get; set; }
 

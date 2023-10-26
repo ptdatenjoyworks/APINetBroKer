@@ -11,5 +11,9 @@ namespace Core.Entities.Contract
         [Required(ErrorMessage = "Suppliers name is a required field.")]
         [MaxLength(60, ErrorMessage = "Maximum length for the Address is 60 characters")]
         public string? Name { get; set; }
+
+        public ICollection<Contract> Contracts { get; set; }
+        public ICollection<SupplierDeposit> SupplierDeposits { get; set; }
     }
+    
 }

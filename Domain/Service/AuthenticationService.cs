@@ -13,10 +13,10 @@ namespace Domain.Service
     public class AuthenticationService : IAuthenticationService
     {
         private readonly AppSettings settings;
-        private readonly UserManager<Core.Entities.User.User> userManager;
+        private readonly UserManager<Core.Entities.User.ApplicationUser> userManager;
         private readonly IMapper mapper;
 
-        public AuthenticationService(UserManager<Core.Entities.User.User> userManager, AppSettings settings, IMapper mapper)
+        public AuthenticationService(UserManager<Core.Entities.User.ApplicationUser> userManager, AppSettings settings, IMapper mapper)
         {
             this.userManager = userManager;
             this.settings = settings;
@@ -25,7 +25,7 @@ namespace Domain.Service
 
         public async Task<IdentityResult> RegisterUser(UserRegisterRequest userRegisterRequest)
         {
-            var user = mapper.Map<Core.Entities.User.User>(userRegisterRequest);
+            var user = mapper.Map<Core.Entities.User.ApplicationUser>(userRegisterRequest);
             var result = await userManager.CreateAsync(user, userRegisterRequest.Password);
             if (result.Succeeded)
             {
@@ -34,14 +34,14 @@ namespace Domain.Service
             return result;
         }
 
-        public async Task<Core.Entities.User.User?> Autheticate(UserLoginRequest request)
+        public async Task<Core.Entities.User.ApplicationUser?> Autheticate(UserLoginRequest request)
         {
             var user = await userManager.FindByNameAsync(request.UserName);
             var result = user != null && await userManager.CheckPasswordAsync(user, request.Password);
             return result ? user : null;
         }
 
-        public async Task<string> CreateToken(Core.Entities.User.User user)
+        public async Task<string> CreateToken(Core.Entities.User.ApplicationUser user)
         {
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims(user);
@@ -56,7 +56,7 @@ namespace Domain.Service
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaims(Core.Entities.User.User user)
+        private async Task<List<Claim>> GetClaims(Core.Entities.User.ApplicationUser user)
         {
             var claims = new List<Claim>
             {

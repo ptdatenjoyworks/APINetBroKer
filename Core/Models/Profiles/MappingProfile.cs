@@ -9,10 +9,10 @@ namespace Core.Models.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<User, UserResponse>();
-            CreateMap<UserResponse, User>();
-            CreateMap<UserRegisterRequest, User>();
-            CreateMap<UserUpdateRequest, User>();
+            CreateMap<ApplicationUser, UserResponse>();
+            CreateMap<UserResponse, ApplicationUser>();
+            CreateMap<UserRegisterRequest, ApplicationUser>();
+            CreateMap<UserUpdateRequest, ApplicationUser>();
         }
     }
 }

@@ -1,33 +1,27 @@
-﻿using Core.Entities.Enum;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities.User
 {
-    public class User : IdentityUser<int>
+    public class ApplicationUser : IdentityUser<int>
     {
-        public User(string fullName, string address)
+        public ApplicationUser(string fullName, string address)
         {
             FullName = fullName;
             Address = address;
         }
-        public User() { }
-        public User(int id, string? userName, string? fullName, string email, string? passwordHash, string? address, DateTime? birthDay, string? phone, bool isActive = true)
+        public ApplicationUser() { }
+        public ApplicationUser(int id, string? userName, string? fullName, string email, string? passwordHash, string? address, DateTime? birthDay, string? phone, bool isActive = true)
         {
             Id = id;
             UserName = userName;
             FullName = fullName;
-            PasswordHash = passwordHash;
             Email = email;
             Address = address;
             BirthDay = birthDay;
             PhoneNumber = phone;
-            IsActive = isActive;
             EmailConfirmed = true;
             PhoneNumberConfirmed = true;
-            NormalizedEmail = email.ToUpper();
-            NormalizedUserName = userName.ToUpper();
         }
 
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
@@ -42,8 +36,5 @@ namespace Core.Entities.User
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public ICollection<Core.Entities.Contract.Contract>? Contracts { get; set; }
-
-        [NotMapped]
-        public ICollection<string>? Roles { get; set; }
     }
 }

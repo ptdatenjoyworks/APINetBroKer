@@ -10,7 +10,7 @@ using System.Diagnostics.Contracts;
 
 namespace Infrastructure.Context
 {
-    public class DataContext : IdentityDbContext<User, ApplicationRole, int>
+    public class DataContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         protected readonly IConfiguration Configuration;
 

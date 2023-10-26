@@ -44,7 +44,7 @@ namespace APINetBorker.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentity<User, ApplicationRole>(o =>
+            var builder = services.AddIdentity<ApplicationUser, ApplicationRole>(o =>
             {
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = false;

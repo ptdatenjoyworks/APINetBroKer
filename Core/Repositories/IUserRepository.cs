@@ -2,7 +2,7 @@
 
 namespace Core.Repositories
 {
-    public interface IUserRepository : IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<ApplicationUser>
     {
     }
 }

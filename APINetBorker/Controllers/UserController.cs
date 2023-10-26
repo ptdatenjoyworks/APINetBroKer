@@ -29,7 +29,7 @@ namespace APINetBorker.Controllers
         public async Task<IActionResult> GetAll()
         {
             var user = await userService.GetAll();
-            return CreateSuccessResult(mapper.Map<List<User>, List<UserResponse>>(user));
+            return CreateSuccessResult(mapper.Map<List<ApplicationUser>, List<UserResponse>>(user));
         }
 
         [HttpGet]

@@ -14,14 +14,14 @@ namespace APINetBorker.Migrations
             using (var scope = serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
                 await dbContext.Database.MigrateAsync(); // Ensure the database is created and up-to-date
 
                 if (!dbContext.Users.Any())
                 {
-                    var admin = new User
+                    var admin = new ApplicationUser
                     {
                         UserName = "admin",
                         Email = "admin@example.com",

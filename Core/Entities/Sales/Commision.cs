@@ -14,6 +14,9 @@ namespace Core.Entities.Sales
 
         //FK DateConfig
         public int? DateConfigId { get; set; }
+        [ForeignKey(nameof(DateConfigId))]
+        public DateConfig? DateConfig { get; set; }
+
         public string? CommissionConfigurationTypeId { get; set; }
         public ProgramAdderType ProgramAdderType { get; set; }
         public decimal? ProgramAdder { get; set; }

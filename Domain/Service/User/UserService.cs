@@ -8,15 +8,15 @@ namespace Domain.Service.User
     public sealed class UserService : IUserService
     {
         private IUserRepository userRepository;
-        private UserManager<Core.Entities.User.User> userManager;
+        private UserManager<Core.Entities.User.ApplicationUser> userManager;
 
-        public UserService(IUserRepository userRepository,  UserManager<Core.Entities.User.User> userManager)
+        public UserService(IUserRepository userRepository,  UserManager<Core.Entities.User.ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
         }
 
-        public async Task<Core.Entities.User.User> Create(Core.Entities.User.User user)
+        public async Task<Core.Entities.User.ApplicationUser> Create(Core.Entities.User.ApplicationUser user)
         {
             var result = await userRepository.CreateAsync(user);
             await userRepository.SaveAsync();
@@ -35,28 +35,28 @@ namespace Domain.Service.User
             return false;
         }
 
-        public async Task<List<Core.Entities.User.User>> GetAll()
+        public async Task<List<Core.Entities.User.ApplicationUser>> GetAll()
         {
-            var users = (await userRepository.FindByConditionAsync(x => x.IsActive)).OfType<Core.Entities.User.User>().ToList();
+            var users = (await userRepository.FindByConditionAsync(x => x.IsActive)).OfType<Core.Entities.User.ApplicationUser>().ToList();
             return users;
         }
 
-        public async Task<Core.Entities.User.User?> GetById(int id)
+        public async Task<Core.Entities.User.ApplicationUser?> GetById(int id)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
-                user.Roles = await userManager.GetRolesAsync(user);
+                //user.Roles = await userManager.GetRolesAsync(user);
             }
             return user;
         }
 
-        public async Task<Core.Entities.User.User?> GetByUserName(string? userName)
+        public async Task<Core.Entities.User.ApplicationUser?> GetByUserName(string? userName)
         {
             return (await userRepository.FindByConditionAsync(x => x.UserName == userName)).FirstOrDefault();
         }
 
-        public async Task Update(Core.Entities.User.User user)
+        public async Task Update(Core.Entities.User.ApplicationUser user)
         {
             await userRepository.UpdateAsync(user);
             await userRepository.SaveAsync();

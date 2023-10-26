@@ -13,5 +13,9 @@ namespace Core.Entities.Sales
         public string? Description { get; set; }
 
         public string? SalesProgramType { get; set; }
+
+        public ICollection<Qualification> Qualifications { get; set; }
+
+        public ICollection<Commision> Commisions { get; set; }
     }
 }

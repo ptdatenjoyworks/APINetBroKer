@@ -4,7 +4,7 @@ using Infrastructure.Context;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : RepositoryBase<User>, IUserRepository
+    public class UserRepository : RepositoryBase<ApplicationUser>, IUserRepository
     {
         public UserRepository(DataContext dataContext) : base(dataContext)
         {

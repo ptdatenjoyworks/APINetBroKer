@@ -1,36 +1,29 @@
 ﻿using Core.Entities.Enum;
+using Core.Entities.User;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
 {
     public class Contract
     {
-        public Contract(int id, string? legalEntityName, int? customerId, int? contactId, int? applicationUserId, DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
-        {
-            Id = id;
-            LegalEntityName = legalEntityName;
-            CustomerId = customerId;
-            ContactId = contactId;
-            ApplicationUserId = applicationUserId;
-            SoldDate = soldDate;
-            BillingChargeType = billingChargeType;
-            BillingType = billingType;
-            EnrollmentType = enrollmentType;
-            PricingType = pricingType;
-        }
-        public Contract(string? legalEntityName, int? customerId, int? contactId, int? applicationUserId, DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
-        {
-            LegalEntityName = legalEntityName;
-            CustomerId = customerId;
-            ContactId = contactId;
-            ApplicationUserId = applicationUserId;
-            SoldDate = soldDate;
-            BillingChargeType = billingChargeType;
-            BillingType = billingType;
-            EnrollmentType = enrollmentType;
-            PricingType = pricingType;
-        }
+   
+      
         public Contract() { }
+
+        public Contract(string? legalEntityName, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  DateTime? soldDate,
+            BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
+        {
+            LegalEntityName = legalEntityName;
+            CustomerId = customerId;
+            ContactId = contactId;
+            CloserId = closerId;
+            FronterId = fronterId;
+            SoldDate = soldDate;
+            BillingChargeType = billingChargeType;
+            BillingType = billingType;
+            EnrollmentType = enrollmentType;
+            PricingType = pricingType;
+        }
 
         [Column("Id")]
         public int Id { get; init; }
@@ -41,11 +34,14 @@ namespace Core.Entities.Contract
         //FK Contact
         public int? ContactId { get; set; }
         public Contact? Contact { get; set; }
-
-        //FK ApplicationUser
-        public int? ApplicationUserId { get; set; }
-        public ApplicationUsers? ApplicationUser { get; set; }
-
+        public int? CloserId { get; private set; }
+        [NotMapped]
+        public ApplicationUser? Closer { get; set; }
+        public int? FronterId { get; private set; }
+        [NotMapped]
+        public ApplicationUser? Fronter { get; set; }
+        public int SuppliersId { get; private set; }
+        public Supplier? Supplier { get; set; } 
         public ICollection<ContractItem>? ContractItems { get; set; }
 
         public DateTime? SoldDate { get; set; }
