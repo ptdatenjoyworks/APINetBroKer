@@ -30,6 +30,7 @@ namespace Infrastructure.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ContractConfiguration());
         }
 
         public DbSet<Supplier> Suppliers { get; set; }

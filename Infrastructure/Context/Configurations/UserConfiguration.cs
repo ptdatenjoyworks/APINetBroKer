@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
         }
     }
 }

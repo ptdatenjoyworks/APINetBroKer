@@ -1,10 +1,11 @@
 ﻿using Core.Entities.User;
+using Core.Models.Response.User;
 
 namespace Core.Services
 {
-    public interface IUserService : IServiceBase<ApplicationUser>
+    public interface IUserService : IServiceBase<UserResponse>
     {
-        Task<ApplicationUser?> GetByUserName(string? userName);
-        Task<ApplicationUser?> GetById(int id);
+        Task<UserResponse?> GetByUserName(string? userName);
+        Task<UserResponse?> GetById(int id);
     }
 }

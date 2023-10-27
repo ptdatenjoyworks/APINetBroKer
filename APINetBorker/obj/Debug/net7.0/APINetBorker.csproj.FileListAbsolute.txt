@@ -3,7 +3,9 @@ C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBor
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.AssemblyInfoInputs.cache
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.AssemblyInfo.cs
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.csproj.CoreCompileInputs.cache
+C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\nlog.config
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\appsettings.json
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\APINetBorker.exe
@@ -77,7 +79,6 @@ C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\Infrastru
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\Core.pdb
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\Domain.pdb
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\Infrastructure.pdb
-C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\staticwebassets\msbuild.APINetBorker.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\staticwebassets\msbuild.build.APINetBorker.props
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.APINetBorker.props
@@ -92,4 +93,3 @@ C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\refint\AP
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.pdb
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\APINetBorker.genruntimeconfig.cache
 C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\obj\Debug\net7.0\ref\APINetBorker.dll
-C:\Users\ptdat\source\repos\APINetBorker\APINetBorker\bin\Debug\net7.0\nlog.config
