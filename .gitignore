@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/APINetBorker/bin/Debug/net7.0
+/APINetBorker/obj/Debug/net7.0
+/APINetBorker/obj
+/Core/bin/Debug/net7.0
+/Core/obj/Debug/net7.0
+/Core/obj
+/Domain/bin/Debug/net7.0
+/Domain/obj/Debug/net7.0
+/Domain/obj
+/Infrastructure/bin/Debug/net7.0
+/Infrastructure/obj/Debug/net7.0
+/Infrastructure/obj
