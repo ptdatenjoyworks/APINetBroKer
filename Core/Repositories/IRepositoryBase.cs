@@ -5,6 +5,8 @@ namespace Core.Repositories
     public interface IRepositoryBase<T>
     {
         Task<IEnumerable<T>> FindAllAsync();
+        IQueryable<T> FindAllAsync(params Expression<Func<T, object>>[] includes);
+        IQueryable<T> GetAllAsQueryable();
         Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);

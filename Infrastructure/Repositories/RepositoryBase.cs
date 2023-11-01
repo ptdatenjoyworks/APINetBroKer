@@ -1,7 +1,9 @@
 ﻿using Core.Repositories;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Repositories
 {
@@ -39,6 +41,25 @@ namespace Infrastructure.Repositories
             }
             return await query.ToListAsync();
         }
+        public IQueryable<T> FindAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            var query = DataContext.Set<T>().AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query,
+                          (current, include) => current.Include(include));
+            }
+
+            return  query;
+        }
+        public IQueryable<T> GetAllAsQueryable()
+        {
+            var query = DataContext.Set<T>().AsQueryable();
+            
+
+            return query;
+        }
+
 
         public Task UpdateAsync(T entity)
         {

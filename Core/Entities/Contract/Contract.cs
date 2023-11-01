@@ -10,14 +10,15 @@ namespace Core.Entities.Contract
       
         public Contract() { }
 
-        public Contract(string? legalEntityName, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  DateTime? soldDate,
-            BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
+        public Contract(string? legalEntityName, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  int suppliersId, 
+            DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
         {
             LegalEntityName = legalEntityName;
             CustomerId = customerId;
             ContactId = contactId;
             CloserId = closerId;
             FronterId = fronterId;
+            SupplierId = suppliersId;
             SoldDate = soldDate;
             BillingChargeType = billingChargeType;
             BillingType = billingType;
@@ -35,12 +36,10 @@ namespace Core.Entities.Contract
         public int? ContactId { get; set; }
         public Contact? Contact { get; set; }
         public int? CloserId { get; private set; }
-        [NotMapped]
         public ApplicationUser? Closer { get; set; }
         public int? FronterId { get; private set; }
-        [NotMapped]
         public ApplicationUser? Fronter { get; set; }
-        public int SuppliersId { get; private set; }
+        public int SupplierId { get; set; }  
         public Supplier? Supplier { get; set; } 
         public ICollection<ContractItem>? ContractItems { get; set; }
 

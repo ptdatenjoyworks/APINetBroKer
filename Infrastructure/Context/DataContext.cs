@@ -31,6 +31,15 @@ namespace Infrastructure.Context
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ContractConfiguration());
+            modelBuilder.ApplyConfiguration(new CommisionConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
+            modelBuilder.ApplyConfiguration(new ContractItemConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new DateConfigConfiguration());
+            modelBuilder.ApplyConfiguration(new QualificationConfiguration());
+            modelBuilder.ApplyConfiguration(new SalesProgramConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierDepositConfiguration());
         }
 
         public DbSet<Supplier> Suppliers { get; set; }

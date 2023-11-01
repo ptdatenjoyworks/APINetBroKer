@@ -4,6 +4,13 @@ namespace Core.Entities.Contract
 {
     public class SupplierDeposit
     {
+        public SupplierDeposit(int? supplierId, DateTime? paymentDate, decimal? amount)
+        {
+            SupplierId = supplierId;
+            PaymentDate = paymentDate;
+            Amount = amount;
+        }
+
         [Column("Id")]
         public int? Id { get; set; }
         //FK Suppliers

@@ -10,6 +10,7 @@ namespace Domain.Service
         { 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<ILoggerManager, LoggerManager>();
         }
     }

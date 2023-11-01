@@ -71,7 +71,7 @@ namespace Domain.Service.User
             return result;
         }
 
-        public async Task Update(Core.Entities.User.ApplicationUser user)
+        public async Task Update(Core.Entities.User.ApplicationUser user) 
         {
             await userRepository.UpdateAsync(user);
             await userRepository.SaveAsync();

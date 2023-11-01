@@ -5,6 +5,11 @@ namespace Core.Entities.Contract
 {
     public class Supplier
     {
+        public Supplier(string? name)
+        {
+            Name = name;
+        }
+
         [Column("Id")]
         public int? Id { get; set; }
 

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Core.Entities.Contract;
 using Core.Entities.User;
+using Core.Models.Requests.Contract;
 using Core.Models.Requests.User;
+using Core.Models.Response;
 using Core.Models.Response.User;
 
 namespace Core.Models.Profiles
@@ -9,10 +12,18 @@ namespace Core.Models.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<ApplicationUser, UserResponse>();
-            CreateMap<UserResponse, ApplicationUser>();
+            CreateMap<ApplicationUser, UserResponse>().ReverseMap();
+            //CreateMap<UserResponse, ApplicationUser>();
+            CreateMap<Supplier, SupplierResponse>().ReverseMap();
+            CreateMap<Contract, ContractReponse>()
+                .ForMember(p=>p.CloserName, p=>p.MapFrom(f=>f.Closer.FullName))
+                .ReverseMap();
+
             CreateMap<UserRegisterRequest, ApplicationUser>();
+            CreateMap<SupplierRequest,Supplier>().ReverseMap();
             CreateMap<UserUpdateRequest, ApplicationUser>();
+
+
         }
     }
 }

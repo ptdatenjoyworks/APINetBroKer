@@ -1,5 +1,4 @@
-﻿using Core.Entities.User;
-using Core.Models.Response.User;
+﻿using Core.Models.Response.User;
 
 namespace Core.Services
 {

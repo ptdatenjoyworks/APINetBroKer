@@ -8,6 +8,7 @@ namespace Infrastructure.Repositories
         public static void UseRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISuppilerRepository, SupplierRepository>();
         }
     }
 }

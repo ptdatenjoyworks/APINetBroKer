@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Core.Entities.User;
 using Core.Models.Requests.User;
 using Core.Models.Response.User;
 using Core.Services;

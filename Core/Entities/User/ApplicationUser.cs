@@ -24,6 +24,15 @@ namespace Core.Entities.User
             PhoneNumberConfirmed = true;
         }
 
+        public ApplicationUser(string? address, DateTime? birthDay, string? fullName, bool isActive, DateTime dateCreated)
+        {
+            Address = address;
+            BirthDay = birthDay;
+            FullName = fullName;
+            IsActive = isActive;
+            DateCreated = dateCreated;
+        }
+
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
         public string? Address { get; set; }
         public DateTime? BirthDay { get; set; }
