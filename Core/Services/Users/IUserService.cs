@@ -1,6 +1,6 @@
 ﻿using Core.Models.Response.User;
 
-namespace Core.Services
+namespace Core.Services.Users
 {
     public interface IUserService : IServiceBase<UserResponse>
     {

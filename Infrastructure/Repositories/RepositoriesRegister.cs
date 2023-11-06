@@ -1,4 +1,7 @@
-﻿using Core.Repositories;
+﻿using Core.Repositories.Contract;
+using Core.Repositories.User;
+using Infrastructure.Repositories.Contracts;
+using Infrastructure.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories
@@ -9,6 +12,7 @@ namespace Infrastructure.Repositories
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISuppilerRepository, SupplierRepository>();
+            services.AddScoped<IContractRepository, ContractRepository>();
         }
     }
 }

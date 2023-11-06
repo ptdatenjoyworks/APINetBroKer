@@ -1,19 +1,21 @@
-﻿using Core.Entities.Enum;
+﻿using Core.Entities.Abstract;
+using Core.Entities.Enum;
 using Core.Entities.User;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
 {
-    public class Contract
+    public class Contract : BaseClass
     {
    
       
         public Contract() { }
 
-        public Contract(string? legalEntityName, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  int suppliersId, 
-            DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType)
+        public Contract(string? legalEntityName,bool isActive, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  int suppliersId, 
+            DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType, Stage stage)
         {
             LegalEntityName = legalEntityName;
+            IsActive = isActive;
             CustomerId = customerId;
             ContactId = contactId;
             CloserId = closerId;
@@ -24,6 +26,7 @@ namespace Core.Entities.Contract
             BillingType = billingType;
             EnrollmentType = enrollmentType;
             PricingType = pricingType;
+            Stage = stage;
         }
 
         [Column("Id")]
@@ -48,5 +51,14 @@ namespace Core.Entities.Contract
         public BillingType BillingType { get; set; }
         public EnrollmentType EnrollmentType { get; set; }
         public PricingType PricingType { get; set; }
+
+        public void Update(string? legalEntityName, bool isActive, Stage stage, int? customerId, int suppliersId)
+        {
+            LegalEntityName = legalEntityName;
+            IsActive = isActive;
+            Stage = stage;
+            CustomerId = customerId;
+            SupplierId = suppliersId;
+        }
     }
 }

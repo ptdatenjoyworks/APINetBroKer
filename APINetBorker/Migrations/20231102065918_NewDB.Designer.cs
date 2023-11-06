@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APINetBorker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231031100910_InitialDataBase")]
-    partial class InitialDataBase
+    [Migration("20231102065918_NewDB")]
+    partial class NewDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,9 @@ namespace APINetBorker.Migrations
                     b.Property<int?>("FronterId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LegalEntityName")
                         .HasColumnType("TEXT");
 
@@ -128,6 +131,9 @@ namespace APINetBorker.Migrations
 
                     b.Property<DateTime?>("SoldDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("INTEGER");
@@ -159,9 +165,11 @@ namespace APINetBorker.Migrations
                             CustomerId = 1,
                             EnrollmentType = 0,
                             FronterId = 1,
+                            IsActive = true,
                             LegalEntityName = "a",
                             PricingType = 0,
                             SoldDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Stage = 0,
                             SupplierId = 1
                         },
                         new
@@ -174,9 +182,11 @@ namespace APINetBorker.Migrations
                             CustomerId = 2,
                             EnrollmentType = 0,
                             FronterId = 2,
+                            IsActive = true,
                             LegalEntityName = "b",
                             PricingType = 0,
                             SoldDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Stage = 0,
                             SupplierId = 2
                         },
                         new
@@ -189,9 +199,11 @@ namespace APINetBorker.Migrations
                             CustomerId = 3,
                             EnrollmentType = 0,
                             FronterId = 3,
+                            IsActive = true,
                             LegalEntityName = "c",
                             PricingType = 0,
                             SoldDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Stage = 0,
                             SupplierId = 3
                         },
                         new
@@ -204,9 +216,11 @@ namespace APINetBorker.Migrations
                             CustomerId = 4,
                             EnrollmentType = 0,
                             FronterId = 4,
+                            IsActive = true,
                             LegalEntityName = "d",
                             PricingType = 0,
                             SoldDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Stage = 0,
                             SupplierId = 4
                         },
                         new
@@ -219,9 +233,11 @@ namespace APINetBorker.Migrations
                             CustomerId = 5,
                             EnrollmentType = 0,
                             FronterId = 5,
+                            IsActive = true,
                             LegalEntityName = "f",
                             PricingType = 0,
                             SoldDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Stage = 0,
                             SupplierId = 5
                         });
                 });
@@ -624,7 +640,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "DN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b87ea6b4-3a55-4aa2-9118-fdcb4f4b3f46",
+                            ConcurrencyStamp = "b815d271-84a4-4bd1-a134-95f00375ebc4",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrDat",
@@ -639,7 +655,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HCM",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "72047654-c8f0-4c1b-a3fa-6432f34f727e",
+                            ConcurrencyStamp = "b91cdccb-de72-44d4-ada7-cdfe03ad0166",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",
@@ -654,7 +670,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "6cd7c247-eb1c-4217-bdce-3d19f37fa5d8",
+                            ConcurrencyStamp = "66894c4b-19f6-40e1-9dff-bb0addf9865b",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrB",
@@ -669,7 +685,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "QN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "7ef8e5d2-caf9-4472-8156-4b9fad29406e",
+                            ConcurrencyStamp = "62b38fef-7b85-49ec-ad9c-24755344d804",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrC",
@@ -684,7 +700,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HT",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "8393256a-eb69-4d94-855c-5e20257466ca",
+                            ConcurrencyStamp = "2cd09ad1-1396-43da-9501-fd1ccb5f973d",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",

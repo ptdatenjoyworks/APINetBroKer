@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APINetBorker.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDataBase : Migration
+    public partial class NewDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -258,7 +258,9 @@ namespace APINetBorker.Migrations
                     BillingType = table.Column<int>(type: "INTEGER", nullable: false),
                     EnrollmentType = table.Column<int>(type: "INTEGER", nullable: false),
                     PricingType = table.Column<int>(type: "INTEGER", nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ApplicationUserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Stage = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -399,11 +401,11 @@ namespace APINetBorker.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "BirthDay", "ConcurrencyStamp", "DateCreated", "Email", "EmailConfirmed", "FullName", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "DN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "b87ea6b4-3a55-4aa2-9118-fdcb4f4b3f46", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrDat", true, false, null, null, null, null, null, false, null, false, null },
-                    { 2, 0, "HCM", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "72047654-c8f0-4c1b-a3fa-6432f34f727e", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null },
-                    { 3, 0, "HN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "6cd7c247-eb1c-4217-bdce-3d19f37fa5d8", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrB", true, false, null, null, null, null, null, false, null, false, null },
-                    { 4, 0, "QN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "7ef8e5d2-caf9-4472-8156-4b9fad29406e", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrC", true, false, null, null, null, null, null, false, null, false, null },
-                    { 5, 0, "HT", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "8393256a-eb69-4d94-855c-5e20257466ca", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null }
+                    { 1, 0, "DN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "b815d271-84a4-4bd1-a134-95f00375ebc4", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrDat", true, false, null, null, null, null, null, false, null, false, null },
+                    { 2, 0, "HCM", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "b91cdccb-de72-44d4-ada7-cdfe03ad0166", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null },
+                    { 3, 0, "HN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "66894c4b-19f6-40e1-9dff-bb0addf9865b", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrB", true, false, null, null, null, null, null, false, null, false, null },
+                    { 4, 0, "QN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "62b38fef-7b85-49ec-ad9c-24755344d804", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrC", true, false, null, null, null, null, null, false, null, false, null },
+                    { 5, 0, "HT", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "2cd09ad1-1396-43da-9501-fd1ccb5f973d", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -444,14 +446,14 @@ namespace APINetBorker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Contracts",
-                columns: new[] { "Id", "ApplicationUserId", "BillingChargeType", "BillingType", "CloserId", "ContactId", "CustomerId", "EnrollmentType", "FronterId", "LegalEntityName", "PricingType", "SoldDate", "SupplierId" },
+                columns: new[] { "Id", "ApplicationUserId", "BillingChargeType", "BillingType", "CloserId", "ContactId", "CustomerId", "EnrollmentType", "FronterId", "IsActive", "LegalEntityName", "PricingType", "SoldDate", "Stage", "SupplierId" },
                 values: new object[,]
                 {
-                    { 1, null, 0, 0, 1, 1, 1, 0, 1, "a", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, null, 0, 0, 2, 2, 2, 0, 2, "b", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 3, null, 0, 0, 3, 3, 3, 0, 3, "c", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 4, null, 0, 0, 4, 4, 4, 0, 4, "d", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 5, null, 0, 0, 5, 5, 5, 0, 5, "f", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 5 }
+                    { 1, null, 0, 0, 1, 1, 1, 0, 1, true, "a", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1 },
+                    { 2, null, 0, 0, 2, 2, 2, 0, 2, true, "b", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 2 },
+                    { 3, null, 0, 0, 3, 3, 3, 0, 3, true, "c", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 3 },
+                    { 4, null, 0, 0, 4, 4, 4, 0, 4, true, "d", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 4 },
+                    { 5, null, 0, 0, 5, 5, 5, 0, 5, true, "f", 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 5 }
                 });
 
             migrationBuilder.InsertData(

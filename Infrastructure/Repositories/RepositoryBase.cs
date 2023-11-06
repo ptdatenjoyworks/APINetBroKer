@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
         public Task DeleteAsync(T entity)
         {
             var entityEntry = DataContext.Entry(entity);
-            entityEntry.State = EntityState.Deleted;
+            DataContext.Remove(entity);
             return Task.CompletedTask;
         }
 
@@ -59,6 +59,17 @@ namespace Infrastructure.Repositories
 
             return query;
         }
+        public IQueryable<T> FindByConditionAsyncs(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
+        {
+            var query = DataContext.Set<T>().Where(expression).AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query,
+                          (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
 
 
         public Task UpdateAsync(T entity)
@@ -69,5 +80,10 @@ namespace Infrastructure.Repositories
         }
 
         public async Task SaveAsync() => await DataContext.SaveChangesAsync();
+
+        public async Task<T> FindById(int id)
+        {
+           return await DataContext.Set<T>().FindAsync(id);
+        }
     }
 }

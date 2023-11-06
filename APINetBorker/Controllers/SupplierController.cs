@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Core.Models.Requests.Contract;
-using Core.Services;
+using Core.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +40,7 @@ namespace APINetBorker.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+
            var result = await supplierService.Delete(id);
 
            return CreateSuccessResult(result);

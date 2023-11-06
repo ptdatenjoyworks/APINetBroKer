@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Contract;
+using Core.Models.Response.Contracts;
 
 namespace Core.Models.Response
 {

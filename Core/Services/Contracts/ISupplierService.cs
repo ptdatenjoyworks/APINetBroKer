@@ -2,7 +2,7 @@
 using Core.Models.Requests.Contract;
 using Core.Models.Response;
 
-namespace Core.Services
+namespace Core.Services.Contracts
 {
     public interface ISupplierService : IServiceBase<SupplierResponse>
     {

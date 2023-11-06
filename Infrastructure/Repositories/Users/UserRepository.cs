@@ -1,8 +1,8 @@
 ﻿using Core.Entities.User;
-using Core.Repositories;
+using Core.Repositories.User;
 using Infrastructure.Context;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.Users
 {
     public class UserRepository : RepositoryBase<ApplicationUser>, IUserRepository
     {

@@ -11,7 +11,7 @@ namespace Infrastructure.Context.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasMany(x=>x.Contracts).WithOne(x => x.Supplier).HasForeignKey(x=>x.SupplierId).HasPrincipalKey(x=>x.Id);
-            builder.HasMany(x=>x.SupplierDeposits).WithOne(x => x.Suppliers).HasForeignKey(x=>x.SupplierId);
+            builder.HasMany(x=>x.SupplierDeposits).WithOne(x => x.Suppliers).HasForeignKey(x=>x.SupplierId).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(
                 new Supplier("a") { Id = 1},

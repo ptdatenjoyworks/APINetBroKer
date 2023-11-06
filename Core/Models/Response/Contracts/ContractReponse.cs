@@ -1,8 +1,8 @@
-﻿using Core.Models.Response.User;
+﻿using Core.Entities.Abstract;
 
-namespace Core.Models.Response
+namespace Core.Models.Response.Contracts
 {
-    public class ContractReponse
+    public class ContractReponse : BaseClass
     {
 
         public int Id { get; init; }
@@ -10,6 +10,6 @@ namespace Core.Models.Response
         public int? CloserId { get; private set; }
         public int? FronterId { get; private set; }
 
-        public string CloserName { get; set; }
+        public string? CloserName { get; set; }
     }
 }

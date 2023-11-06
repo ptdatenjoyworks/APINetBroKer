@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Core.Entities.User;
 using Core.Models.Response.User;
-using Core.Repositories;
-using Core.Services;
+using Core.Repositories.User;
+using Core.Services.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Service.User
