@@ -13,6 +13,7 @@ namespace Infrastructure.Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISuppilerRepository, SupplierRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
+            services.AddScoped<IContractItemRepository, ContractItemRepository>();
         }
     }
 }

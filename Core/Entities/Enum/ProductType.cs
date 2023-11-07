@@ -2,6 +2,8 @@
 {
     public enum ProductType
     {
-        None
+        None,
+        Elec,
+        Gas
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APINetBorker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231102065918_NewDB")]
-    partial class NewDB
+    [Migration("20231107082329_DatabaseCreation")]
+    partial class DatabaseCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -258,10 +258,13 @@ namespace APINetBorker.Migrations
                     b.Property<int?>("ContractsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("EnergyUnitType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ProductType")
@@ -270,10 +273,13 @@ namespace APINetBorker.Migrations
                     b.Property<decimal?>("Rate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<int>("Stage")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TermMonth")
+                    b.Property<int>("TermMonth")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("UtilityAccountNumber")
@@ -284,6 +290,88 @@ namespace APINetBorker.Migrations
                     b.HasIndex("ContractsId");
 
                     b.ToTable("ContractItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adder = 1m,
+                            AnnualUsage = 1,
+                            ContractsId = 1,
+                            EndDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnergyUnitType = 4,
+                            IsActive = true,
+                            ProductType = 1,
+                            Rate = 1m,
+                            Stage = 0,
+                            StartDate = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TermMonth = 2,
+                            UtilityAccountNumber = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adder = 1m,
+                            AnnualUsage = 1,
+                            ContractsId = 2,
+                            EndDate = new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnergyUnitType = 2,
+                            IsActive = true,
+                            ProductType = 2,
+                            Rate = 1m,
+                            Stage = 0,
+                            StartDate = new DateTime(2023, 7, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TermMonth = 3,
+                            UtilityAccountNumber = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Adder = 1m,
+                            AnnualUsage = 1,
+                            ContractsId = 3,
+                            EndDate = new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnergyUnitType = 3,
+                            IsActive = true,
+                            ProductType = 2,
+                            Rate = 1m,
+                            Stage = 0,
+                            StartDate = new DateTime(2023, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TermMonth = 4,
+                            UtilityAccountNumber = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Adder = 1m,
+                            AnnualUsage = 1,
+                            ContractsId = 4,
+                            EndDate = new DateTime(2023, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnergyUnitType = 4,
+                            IsActive = true,
+                            ProductType = 1,
+                            Rate = 1m,
+                            Stage = 0,
+                            StartDate = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TermMonth = 5,
+                            UtilityAccountNumber = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Adder = 1m,
+                            AnnualUsage = 1,
+                            ContractsId = 5,
+                            EndDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnergyUnitType = 4,
+                            IsActive = true,
+                            ProductType = 1,
+                            Rate = 1m,
+                            Stage = 0,
+                            StartDate = new DateTime(2023, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TermMonth = 6,
+                            UtilityAccountNumber = 5
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Contract.Customer", b =>
@@ -335,10 +423,16 @@ namespace APINetBorker.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Id");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -348,27 +442,37 @@ namespace APINetBorker.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "a"
+                            IsActive = true,
+                            Name = "a",
+                            Stage = 0
                         },
                         new
                         {
                             Id = 2,
-                            Name = "b"
+                            IsActive = true,
+                            Name = "b",
+                            Stage = 0
                         },
                         new
                         {
                             Id = 3,
-                            Name = "c"
+                            IsActive = true,
+                            Name = "c",
+                            Stage = 0
                         },
                         new
                         {
                             Id = 4,
-                            Name = "d"
+                            IsActive = true,
+                            Name = "d",
+                            Stage = 0
                         },
                         new
                         {
                             Id = 5,
-                            Name = "e"
+                            IsActive = true,
+                            Name = "e",
+                            Stage = 0
                         });
                 });
 
@@ -640,7 +744,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "DN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b815d271-84a4-4bd1-a134-95f00375ebc4",
+                            ConcurrencyStamp = "d774238f-6700-4e7f-92fe-dc7eefe2f31f",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrDat",
@@ -655,7 +759,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HCM",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b91cdccb-de72-44d4-ada7-cdfe03ad0166",
+                            ConcurrencyStamp = "a29717f4-8c81-4a1f-98ce-2e06d3026a16",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",
@@ -670,7 +774,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "66894c4b-19f6-40e1-9dff-bb0addf9865b",
+                            ConcurrencyStamp = "abffcd8b-ebcb-45ce-a910-e6401ecef676",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrB",
@@ -685,7 +789,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "QN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "62b38fef-7b85-49ec-ad9c-24755344d804",
+                            ConcurrencyStamp = "1ca9af26-37e3-4592-ab13-eeec97376c05",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrC",
@@ -700,7 +804,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HT",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "2cd09ad1-1396-43da-9501-fd1ccb5f973d",
+                            ConcurrencyStamp = "cf328916-32af-4d98-9b7e-b98754ad5e1d",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",
@@ -862,7 +966,8 @@ namespace APINetBorker.Migrations
                 {
                     b.HasOne("Core.Entities.Contract.Supplier", "Suppliers")
                         .WithMany()
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Core.Entities.Contract.Supplier", null)
                         .WithMany("SupplierDeposits")

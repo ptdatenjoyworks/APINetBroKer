@@ -25,6 +25,10 @@ namespace Core.Models.Profiles
             CreateMap<SupplierRequest,Supplier>().ReverseMap();
             CreateMap<UserUpdateRequest, ApplicationUser>();
 
+            CreateMap<ContractItem, ContractItemReponse>().ReverseMap();
+            CreateMap<ContractItem, ContractItemRequest>().ReverseMap();
+
+
         }
     }
 }

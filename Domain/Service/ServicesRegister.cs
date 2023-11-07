@@ -16,6 +16,7 @@ namespace Domain.Service
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<IContractItemService, ContractItemService>();
         }
     }
 }
