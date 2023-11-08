@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Core.Entities.Contract;
-using Core.Entities.Enum;
 using Core.Models.Requests.Contract;
 using Core.Models.Response.Contracts;
 using Core.Repositories.Contract;
@@ -24,16 +23,17 @@ namespace Domain.Service.Contracts
         {
             throw new NotImplementedException();
         }
-        public async Task<bool> Create (ContractItemRequest contractItemRequest)
+        public async Task<ContractItemReponse> Create (ContractItemRequest contractItemRequest)
         {
             if (contractItemRequest.IsActive)
             {
                 var contractItem = mapper.Map<ContractItemRequest, ContractItem>(contractItemRequest);
                 await contractItemRepository.CreateAsync(contractItem);
                 await contractItemRepository.SaveAsync();
-                return true;
+                var contractItemReponse = mapper.Map<ContractItemRequest, ContractItemReponse>(contractItemRequest);
+                return contractItemReponse;
             }
-            return false;
+            return null;
         }
 
         public async Task<bool> Delete(int id)
@@ -54,15 +54,11 @@ namespace Domain.Service.Contracts
             var result = await contractItemRepository.FindByConditionAsyncs(x => x.IsActive).ProjectTo<ContractItemReponse>(mapper.ConfigurationProvider).ToListAsync();
             return result;
         }
-
-        public Task Update(ContractItemReponse entity)
-        {
-            throw new NotImplementedException();
-        }
+       
         public async Task Update(ContractItemRequest entity)
         {
             var contract = await contractItemRepository.FindById(entity.Id);
-            if (contract != null && entity.Stage == Stage.Opportunity)
+            if (contract != null)
             {
                 contract.Update(entity.ContractsId, entity.StartDate, entity.TermMonth, entity.ProductType, entity.EnergyUnitType);
 

@@ -4,6 +4,9 @@ namespace Core.Models.Requests.User
 {
     public class UserRegisterRequest
     {
+
+        [Required]
+        public int Id { get; init; }
         [Required]
         public string? UserName { get; init; }
 

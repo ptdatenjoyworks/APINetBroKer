@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Abstract;
 using Core.Entities.Enum;
 using Core.Entities.User;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
@@ -51,14 +52,28 @@ namespace Core.Entities.Contract
         public BillingType BillingType { get; set; }
         public EnrollmentType EnrollmentType { get; set; }
         public PricingType PricingType { get; set; }
+        public Stage Stage { get; set; } = Stage.Opportunity;
 
-        public void Update(string? legalEntityName, bool isActive, Stage stage, int? customerId, int suppliersId)
+        public void Update(string? legalEntityName, Stage stage, int? customerId, int suppliersId)
         {
-            LegalEntityName = legalEntityName;
-            IsActive = isActive;
-            Stage = stage;
-            CustomerId = customerId;
-            SupplierId = suppliersId;
+            if (!IsActive)
+            {
+                throw new InvalidEnumArgumentException("Contract not IsActive");
+            }
+            else if(stage != Stage.Opportunity && SupplierId != suppliersId)
+            {
+                throw  new InvalidEnumArgumentException("Stage khong phai Opportunity");
+            }
+            else
+            {
+                LegalEntityName = legalEntityName;
+                CustomerId = customerId;
+                SupplierId = suppliersId;
+            }
+        }
+        public void Delete()
+        {
+            IsActive = false;
         }
     }
 }

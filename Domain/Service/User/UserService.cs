@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Core.Entities.Enum;
 using Core.Entities.User;
+using Core.Models.Requests.User;
 using Core.Models.Response.User;
 using Core.Repositories.User;
 using Core.Services.Users;
@@ -14,15 +16,16 @@ namespace Domain.Service.User
         private IMapper mapper;
         private UserManager<Core.Entities.User.ApplicationUser> userManager;
 
-        public UserService(IUserRepository userRepository, IMapper mapper,  UserManager<Core.Entities.User.ApplicationUser> userManager)
+        public UserService(IUserRepository userRepository, IMapper mapper, UserManager<Core.Entities.User.ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
             this.mapper = mapper;
         }
 
-        public async Task<UserResponse> Create(Core.Entities.User.ApplicationUser user)
+        public async Task<UserResponse> Create(UserRegisterRequest userRegisterRequest)
         {
+            var user = mapper.Map<UserRegisterRequest, ApplicationUser>(userRegisterRequest);
             var result = await userRepository.CreateAsync(user);
             await userRepository.SaveAsync();
             var users = mapper.Map<ApplicationUser, UserResponse>(user);
@@ -39,8 +42,8 @@ namespace Domain.Service.User
             var user = (await userRepository.FindByConditionAsync(x => x.Id == id)).FirstOrDefault();
             if (user != null)
             {
-                user.IsActive = false;
-                await Update(user);
+                user.Delete();
+                await userRepository.SaveAsync();
                 return true;
             }
             return false;
@@ -60,7 +63,7 @@ namespace Domain.Service.User
             {
                 //user.Roles = await userManager.GetRolesAsync(user);
             }
-            var result = mapper?.Map<ApplicationUser,UserResponse>(user);   
+            var result = mapper?.Map<ApplicationUser, UserResponse>(user);
             return result;
         }
 
@@ -71,10 +74,15 @@ namespace Domain.Service.User
             return result;
         }
 
-        public async Task Update(Core.Entities.User.ApplicationUser user) 
+        public async Task Update(UserRegisterRequest userRegisterRequest)
         {
-            await userRepository.UpdateAsync(user);
-            await userRepository.SaveAsync();
+
+            var user = await userRepository.FindById(userRegisterRequest.Id);
+            if (user != null)
+            {
+                user.Update(userRegisterRequest.FullName, userRegisterRequest?.Email, userRegisterRequest.Address, userRegisterRequest.BirthDay, userRegisterRequest.PhoneNumber);
+                await userRepository.SaveAsync();
+            }
         }
 
         public Task Update(UserResponse entity)

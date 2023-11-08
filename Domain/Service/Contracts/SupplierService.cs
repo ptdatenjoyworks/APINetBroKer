@@ -13,25 +13,20 @@ namespace Domain.Service.Contracts
     {
         private ISuppilerRepository suppilerRepository;
         private IMapper mapper;
-        private IContractRepository contractRepository;
 
-        public SupplierService(ISuppilerRepository suppilerRepository, IMapper mapper, IContractRepository contractRepository)
+        public SupplierService(ISuppilerRepository suppilerRepository, IMapper mapper)
         {
             this.suppilerRepository = suppilerRepository;
             this.mapper = mapper;
-            this.contractRepository = contractRepository;
         }
 
-        public async Task Create(SupplierRequest entity)
+        public async Task<SupplierResponse> Create(SupplierRequest entity)
         {
             var supplier = mapper.Map<SupplierRequest, Supplier>(entity);
             var result = await suppilerRepository.CreateAsync(supplier);
             await suppilerRepository.SaveAsync();
-        }
-
-        public Task<SupplierResponse> Create(SupplierResponse entity)
-        {
-            throw new NotImplementedException();
+            var supplierReponse = mapper.Map<SupplierRequest, SupplierResponse>(entity);
+            return supplierReponse;
         }
 
         public async Task<bool> Delete(int id)
@@ -53,17 +48,13 @@ namespace Domain.Service.Contracts
             var result = await suppilerRepository.FindAllAsync(p => p.Contracts).ProjectTo<SupplierResponse>(mapper.ConfigurationProvider).ToListAsync();
             return result;
         }
-
-        public Task Update(SupplierResponse entity)
-        {
-            throw new NotImplementedException();
-        }
+     
         public async Task Update(SupplierRequest supplier)
         {
             var sup = await suppilerRepository.FindById(supplier.Id);
             if (sup != null)
             {
-                sup.Update(supplier.Name, supplier.IsActive, supplier.Stage);
+                sup.Update(supplier?.Name);
                 await suppilerRepository.SaveAsync();
             }
         }

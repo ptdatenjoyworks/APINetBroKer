@@ -87,21 +87,21 @@ namespace APINetBorker.Controllers
 
         [HttpPut]
         [Route("")]
-        public async Task<IActionResult> Update([FromBody] UserUpdateRequest request)
+        public async Task<IActionResult> Update([FromBody] UserRegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return CreateModelStateErrors(ModelState);
             }
 
-            var user = await userService.GetById(request.Id ?? 0);
+            var user = await userService.GetById(request?.Id ?? 0);
             if (user == null)
             {
                 return CreateFailResult("User not found.");
             }
 
             mapper.Map(request, user);
-            await userService.Update(user);
+            await userService.Update(request);
             return CreateSuccessResult(mapper.Map<UserResponse>(user));
         }
 

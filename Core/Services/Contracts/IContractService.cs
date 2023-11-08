@@ -4,9 +4,9 @@ using Core.Models.Response.Contracts;
 
 namespace Core.Services.Contracts
 {
-    public interface IContractService : IServiceBase<ContractReponse>
+    public interface IContractService : IServiceBase<ContractReponse,ContractRequest>
     {
-        Task<bool> Create(ContractRequest contractRequest);
+        //Task<bool> Create(ContractRequest contractRequest);
         Task Update(ContractRequest entity);
     }
 }

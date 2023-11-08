@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Core.Models.Requests.Contract;
-using Core.Entities.Enum;
 using Core.Entities.Abstract;
 
 namespace Core.Entities.Contract
@@ -22,12 +20,10 @@ namespace Core.Entities.Contract
 
         public ICollection<Contract> Contracts { get; set; }
         public ICollection<SupplierDeposit> SupplierDeposits { get; set; }
-        public void Update(string name,bool isActive, Stage stage)
+        public void Update(string name)
         {
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("Supplier name");
             Name = name;
-            IsActive = isActive;
-            Stage = stage;
         }
     }
     

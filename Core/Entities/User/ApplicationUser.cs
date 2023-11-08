@@ -45,5 +45,19 @@ namespace Core.Entities.User
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public ICollection<Core.Entities.Contract.Contract>? Contracts { get; set; }
+
+        public void Update(string? fullName, string email, string? address, DateTime? birthDay, string? phone)
+        {
+            FullName = fullName;
+            Email = email;
+            Address = address;
+            BirthDay = birthDay;
+            PhoneNumber = phone;
+        }
+
+        public void Delete()
+        {
+            IsActive = false;
+        }    
     }
 }

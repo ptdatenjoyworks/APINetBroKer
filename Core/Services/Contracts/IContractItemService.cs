@@ -4,10 +4,9 @@ using Core.Models.Response.Contracts;
 
 namespace Core.Services.Contracts
 {
-    public interface IContractItemService : IServiceBase<ContractItemReponse>
+    public interface IContractItemService : IServiceBase<ContractItemReponse,ContractItemRequest>
     {
         Task<List<ContractItemReponse>> GetAll();
-        Task<bool> Create (ContractItemRequest contractItemRequest);
         Task Update(ContractItemRequest entity);
     }
 }

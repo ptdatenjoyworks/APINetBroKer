@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Core.Entities.Enum;
 
 namespace Core.Models.Requests.Contract
 {
@@ -9,5 +10,6 @@ namespace Core.Models.Requests.Contract
         public int SupplierId { get; set; }
         public int? CustomerId { get; set; }
         public int? ContactId { get; set; }
+        public Stage Stage { get; set; }
     }
 }

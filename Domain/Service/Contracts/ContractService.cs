@@ -20,21 +20,13 @@ namespace Domain.Service.Contracts
             this.contractRepository = contractRepository;
             this.mapper = mapper;
         }
-        public async Task<bool> Create(ContractRequest contractRequest)
+        public async Task<ContractReponse> Create(ContractRequest contractRequest)
         {
-            if (contractRequest.IsActive)
-            {
-                var contract = mapper.Map<ContractRequest, Core.Entities.Contract.Contract>(contractRequest);
-                await contractRepository.CreateAsync(contract);
-                await contractRepository.SaveAsync();
-                return true;
-            }
-            return false;
-        }
-
-        public Task<ContractReponse> Create(ContractReponse entity)
-        {
-            throw new NotImplementedException();
+            var contract = mapper.Map<ContractRequest, Core.Entities.Contract.Contract>(contractRequest);
+            await contractRepository.CreateAsync(contract);
+            await contractRepository.SaveAsync();
+            var result = mapper.Map<Contract, ContractReponse>(contract);
+            return result;
         }
 
         public async Task<bool> Delete(int id)
@@ -42,9 +34,8 @@ namespace Domain.Service.Contracts
             var contract = await contractRepository.FindById(id);
             if (contract != null)
             {
-                var result = mapper.Map<Contract, ContractRequest>(contract);
-                result.IsActive = false;
-                await Update(result);
+                contract.Delete();
+                await contractRepository.SaveAsync();
                 return true;
             }
             return false;
@@ -55,17 +46,12 @@ namespace Domain.Service.Contracts
             var results = await contractRepository.FindByConditionAsyncs(x => x.IsActive).ProjectTo<ContractReponse>(mapper.ConfigurationProvider).ToListAsync();
             return results;
         }
-
-        public async Task Update(ContractReponse entity)
-        {
-            throw new NotImplementedException();
-        }
         public async Task Update(ContractRequest entity)
         {
             var contract = await contractRepository.FindById(entity.Id);
-            if (contract != null && entity.Stage == Stage.Opportunity)
+            if (contract != null)
             {
-                contract.Update(entity.LegalEntityName, entity.IsActive, entity.Stage, entity.CustomerId, entity.SupplierId);
+                contract.Update(entity.LegalEntityName, entity.Stage, entity.CustomerId, entity.SupplierId);
 
                 await contractRepository.SaveAsync();
             }

@@ -36,7 +36,7 @@ namespace APINetBorker.Controllers
         public async Task<IActionResult> Create([FromBody] ContractRequest contractRequest)
         {
             var result = await contractService.Create(contractRequest);
-            return result ? CreateSuccessResult(contractRequest) : CreateFailResult("Contract not Active");
+            return result != null ? CreateSuccessResult(contractRequest) : CreateFailResult("Contract not Active");
         }
 
 
