@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Contract;
 using Core.Models.Requests.Contract;
 using Core.Models.Response.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Core.Services.Contracts
 {
@@ -8,5 +9,7 @@ namespace Core.Services.Contracts
     {
         Task<List<ContractItemReponse>> GetAll();
         Task Update(ContractItemRequest entity);
+        Task<bool> CreateContractItem(ContractItemCreateRequest contractItemRequest);
+
     }
 }

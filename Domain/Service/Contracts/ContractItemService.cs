@@ -5,7 +5,10 @@ using Core.Models.Requests.Contract;
 using Core.Models.Response.Contracts;
 using Core.Repositories.Contract;
 using Core.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using System.Windows;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Domain.Service.Contracts
 {
@@ -13,7 +16,8 @@ namespace Domain.Service.Contracts
     {
         private readonly IContractItemRepository contractItemRepository;
         private IMapper mapper;
-
+        private string FilePath = $"{AppDomain.CurrentDomain.BaseDirectory}ContractItemAttchments";
+        
         public ContractItemService(IContractItemRepository contractItemRepository, IMapper mapper)
         {
             this.contractItemRepository = contractItemRepository;
@@ -34,6 +38,50 @@ namespace Domain.Service.Contracts
                 return contractItemReponse;
             }
             return null;
+        }
+        public async Task<bool> CreateContractItem([FromBody] ContractItemCreateRequest contractItemRequest)
+        {
+            
+            try
+            {
+                if (contractItemRequest == null)
+                {
+                    throw new ArgumentNullException("ContractItem null");
+                }
+                if (contractItemRequest.ContractItemAttachment != null)
+                {
+                    if (!Directory.Exists(FilePath))
+                    {
+                        Directory.CreateDirectory(FilePath);
+                    }
+                    foreach (var file in contractItemRequest.ContractItemAttachment)
+                    {
+                        string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                        if (fileExtension != ".pdf" && fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".doc" && fileExtension != ".docx")
+                        {
+                            throw new ArgumentNullException("ContractItem file not allow");
+                        }
+                        if (file.Length > 0)
+                        {
+                            string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                          
+                            string filePath = Path.Combine(FilePath, uniqueFileName);
+
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
 
         public async Task<bool> Delete(int id)

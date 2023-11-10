@@ -10,10 +10,14 @@ namespace Core.Entities.Sales
         //FK SalesProgram
         public int? SalesProgramId { get; set; }
         public SalesProgram? SalesProgram { get; set; }
-
-
+    }
+    public class QualificationDate : Qualification
+    {
         public DateTime? EffectiveDate { get; set; }
         public DateTime? ExpiryDate { get; set; }
+    }
+    public class QualificationAnnualUsage : Qualification
+    {
         public int? FromAnnualUsage { get; set; }
         public int? ToAnnualUsage { get; set; }
     }

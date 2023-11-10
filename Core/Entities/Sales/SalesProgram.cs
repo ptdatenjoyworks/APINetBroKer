@@ -5,6 +5,13 @@ namespace Core.Entities.Sales
 {
     public class SalesProgram
     {
+        public SalesProgram(EnergyUnitType energyUnitType, string? description, string? salesProgramType)
+        {
+            EnergyUnitType = energyUnitType;
+            Description = description;
+            SalesProgramType = salesProgramType;
+        }
+
         [Column("Id")]
         public int? Id { get; set; }
 

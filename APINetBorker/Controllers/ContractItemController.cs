@@ -30,10 +30,10 @@ namespace APINetBorker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("")]
-        public async Task<IActionResult> Create([FromBody] ContractItemRequest contractItemRequest)
+        public async Task<IActionResult> Create([FromForm] ContractItemCreateRequest contractItemRequest)
         {
-            var result = await contractItemService.Create(contractItemRequest);
-            return result != null ? CreateSuccessResult(contractItemRequest) : CreateFailResult("Contract not Active");
+            var result =  await contractItemService.CreateContractItem(contractItemRequest);
+            return result ? CreateSuccessResult("Create Success") : CreateFailResult("Create faild");
         }
 
         [HttpDelete]
@@ -47,7 +47,7 @@ namespace APINetBorker.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("")]
+        [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] ContractItemRequest contractItemRequest)
         {
             var result = contractItemService.Update(contractItemRequest);

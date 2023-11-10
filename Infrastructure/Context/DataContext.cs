@@ -49,5 +49,6 @@ namespace Infrastructure.Context
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<SalesProgram> SalePrograms { get; set; }
         public DbSet<DateConfig> DateConfigs { get; set; }
+        public DbSet<Qualification> Qualifications { get; set; }
     }
 }

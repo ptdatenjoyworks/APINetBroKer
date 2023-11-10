@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Abstract;
 using Core.Entities.Enum;
 using Core.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
@@ -26,6 +27,7 @@ namespace Core.Entities.Contract
             }
 
         }
+
         private ContractItem()
         {
 
@@ -49,6 +51,7 @@ namespace Core.Entities.Contract
         public int? AnnualUsage { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Adder { get; set; }
+        public ICollection<ContractItemAttchment> Attachments { get; set; }
 
         public void Update(int? contractId, DateTime startDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType)
         {

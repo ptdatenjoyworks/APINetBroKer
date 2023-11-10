@@ -10,7 +10,11 @@ namespace Infrastructure.Context.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.HasOne(x=>x.SalesProgram).WithMany(x => x.Qualifications).HasForeignKey(x => x.SalesProgramId);
+
+
+            builder.HasDiscriminator()
+                .HasValue<QualificationDate>("QualificationDate")
+                .HasValue<QualificationAnnualUsage>("QualificationAnnualUsage");
         }
     }
 }

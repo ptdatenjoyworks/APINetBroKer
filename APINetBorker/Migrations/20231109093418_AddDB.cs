@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APINetBorker.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseCreation : Migration
+    public partial class AddDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -107,8 +107,7 @@ namespace APINetBorker.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 60, nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Stage = table.Column<int>(type: "INTEGER", nullable: false)
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,22 +221,23 @@ namespace APINetBorker.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Qualification",
+                name: "Qualifications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     SalesProgramId = table.Column<int>(type: "INTEGER", nullable: true),
-                    EffectiveDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
                     FromAnnualUsage = table.Column<int>(type: "INTEGER", nullable: true),
-                    ToAnnualUsage = table.Column<int>(type: "INTEGER", nullable: true)
+                    ToAnnualUsage = table.Column<int>(type: "INTEGER", nullable: true),
+                    EffectiveDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ExpiryDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Qualification", x => x.Id);
+                    table.PrimaryKey("PK_Qualifications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Qualification_SalePrograms_SalesProgramId",
+                        name: "FK_Qualifications_SalePrograms_SalesProgramId",
                         column: x => x.SalesProgramId,
                         principalTable: "SalePrograms",
                         principalColumn: "Id");
@@ -260,9 +260,9 @@ namespace APINetBorker.Migrations
                     BillingType = table.Column<int>(type: "INTEGER", nullable: false),
                     EnrollmentType = table.Column<int>(type: "INTEGER", nullable: false),
                     PricingType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Stage = table.Column<int>(type: "INTEGER", nullable: false),
                     ApplicationUserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Stage = table.Column<int>(type: "INTEGER", nullable: false)
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,8 +343,7 @@ namespace APINetBorker.Migrations
                     AnnualUsage = table.Column<int>(type: "INTEGER", nullable: true),
                     Rate = table.Column<decimal>(type: "TEXT", nullable: true),
                     Adder = table.Column<decimal>(type: "TEXT", nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Stage = table.Column<int>(type: "INTEGER", nullable: false)
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -354,6 +353,26 @@ namespace APINetBorker.Migrations
                         column: x => x.ContractsId,
                         principalTable: "Contracts",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractItemAttchment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Path = table.Column<string>(type: "TEXT", nullable: false),
+                    ContractItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractItemAttchment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractItemAttchment_ContractItems_ContractItemId",
+                        column: x => x.ContractItemId,
+                        principalTable: "ContractItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,11 +425,11 @@ namespace APINetBorker.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "BirthDay", "ConcurrencyStamp", "DateCreated", "Email", "EmailConfirmed", "FullName", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "DN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "d774238f-6700-4e7f-92fe-dc7eefe2f31f", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrDat", true, false, null, null, null, null, null, false, null, false, null },
-                    { 2, 0, "HCM", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "a29717f4-8c81-4a1f-98ce-2e06d3026a16", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null },
-                    { 3, 0, "HN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "abffcd8b-ebcb-45ce-a910-e6401ecef676", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrB", true, false, null, null, null, null, null, false, null, false, null },
-                    { 4, 0, "QN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "1ca9af26-37e3-4592-ab13-eeec97376c05", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrC", true, false, null, null, null, null, null, false, null, false, null },
-                    { 5, 0, "HT", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "cf328916-32af-4d98-9b7e-b98754ad5e1d", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null }
+                    { 1, 0, "DN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "9f51968a-023c-48af-8778-6d1f9f896058", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrDat", true, false, null, null, null, null, null, false, null, false, null },
+                    { 2, 0, "HCM", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "ad9a41dd-f54c-4db6-85a6-77df1403370a", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null },
+                    { 3, 0, "HN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "5a378440-b3a1-4345-8631-0e7e1c699f06", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrB", true, false, null, null, null, null, null, false, null, false, null },
+                    { 4, 0, "QN", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "c4c5d301-3008-460c-a44c-babe83b9d7e2", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrC", true, false, null, null, null, null, null, false, null, false, null },
+                    { 5, 0, "HT", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "a176ded4-7e44-4185-bb48-5adddb39affa", new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, "MrD", true, false, null, null, null, null, null, false, null, false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -439,14 +458,14 @@ namespace APINetBorker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Suppliers",
-                columns: new[] { "Id", "IsActive", "Name", "Stage" },
+                columns: new[] { "Id", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, true, "a", 0 },
-                    { 2, true, "b", 0 },
-                    { 3, true, "c", 0 },
-                    { 4, true, "d", 0 },
-                    { 5, true, "e", 0 }
+                    { 1, true, "a" },
+                    { 2, true, "b" },
+                    { 3, true, "c" },
+                    { 4, true, "d" },
+                    { 5, true, "e" }
                 });
 
             migrationBuilder.InsertData(
@@ -475,14 +494,14 @@ namespace APINetBorker.Migrations
 
             migrationBuilder.InsertData(
                 table: "ContractItems",
-                columns: new[] { "Id", "Adder", "AnnualUsage", "ContractsId", "EndDate", "EnergyUnitType", "IsActive", "ProductType", "Rate", "Stage", "StartDate", "TermMonth", "UtilityAccountNumber" },
+                columns: new[] { "Id", "Adder", "AnnualUsage", "ContractsId", "EndDate", "EnergyUnitType", "IsActive", "ProductType", "Rate", "StartDate", "TermMonth", "UtilityAccountNumber" },
                 values: new object[,]
                 {
-                    { 1, 1m, 1, 1, new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 1m, 0, new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 1 },
-                    { 2, 1m, 1, 2, new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, 2, 1m, 0, new DateTime(2023, 7, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 2 },
-                    { 3, 1m, 1, 3, new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, true, 2, 1m, 0, new DateTime(2023, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 3 },
-                    { 4, 1m, 1, 4, new DateTime(2023, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 1m, 0, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 5, 4 },
-                    { 5, 1m, 1, 5, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 1m, 0, new DateTime(2023, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 5 }
+                    { 1, 1m, 1, 1, new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 1m, new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 1 },
+                    { 2, 2m, 2, 2, new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, 2, 2m, new DateTime(2023, 7, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 2 },
+                    { 3, 3m, 3, 3, new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, true, 2, 3m, new DateTime(2023, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 3 },
+                    { 4, 4m, 4, 4, new DateTime(2023, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 4m, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 5, 4 },
+                    { 5, 5m, 5, 5, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1, 5m, new DateTime(2023, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 5 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -533,6 +552,11 @@ namespace APINetBorker.Migrations
                 column: "SalesProgramId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContractItemAttchment_ContractItemId",
+                table: "ContractItemAttchment",
+                column: "ContractItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ContractItems_ContractsId",
                 table: "ContractItems",
                 column: "ContractsId");
@@ -573,8 +597,8 @@ namespace APINetBorker.Migrations
                 column: "CommisionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Qualification_SalesProgramId",
-                table: "Qualification",
+                name: "IX_Qualifications_SalesProgramId",
+                table: "Qualifications",
                 column: "SalesProgramId");
 
             migrationBuilder.CreateIndex(
@@ -618,16 +642,19 @@ namespace APINetBorker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ContractItems");
+                name: "ContractItemAttchment");
 
             migrationBuilder.DropTable(
-                name: "Qualification");
+                name: "Qualifications");
 
             migrationBuilder.DropTable(
                 name: "SupplierDeposit");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ContractItems");
 
             migrationBuilder.DropTable(
                 name: "Contracts");
