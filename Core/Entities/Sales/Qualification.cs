@@ -8,17 +8,17 @@ namespace Core.Entities.Sales
         public int? Id { get; set; }
 
         //FK SalesProgram
-        public int? SalesProgramId { get; set; }
-        public SalesProgram? SalesProgram { get; set; }
+        public int? SalesProgramId { get; private set; }
+        public SalesProgram? SalesProgram { get; private set; }
     }
     public class QualificationDate : Qualification
     {
-        public DateTime? EffectiveDate { get; set; }
-        public DateTime? ExpiryDate { get; set; }
+        public DateTime? EffectiveDate { get; private set; }
+        public DateTime? ExpiryDate { get; private set; }
     }
     public class QualificationAnnualUsage : Qualification
     {
-        public int? FromAnnualUsage { get; set; }
-        public int? ToAnnualUsage { get; set; }
+        public int? FromAnnualUsage { get; private set; }
+        public int? ToAnnualUsage { get; private set; }
     }
 }

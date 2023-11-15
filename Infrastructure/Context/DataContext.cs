@@ -31,6 +31,8 @@ namespace Infrastructure.Context
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ContractConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierDepositConfiguration());
             modelBuilder.ApplyConfiguration(new CommisionConfiguration());
             modelBuilder.ApplyConfiguration(new ContactConfiguration());
             modelBuilder.ApplyConfiguration(new ContractItemConfiguration());
@@ -38,8 +40,6 @@ namespace Infrastructure.Context
             modelBuilder.ApplyConfiguration(new DateConfigConfiguration());
             modelBuilder.ApplyConfiguration(new QualificationConfiguration());
             modelBuilder.ApplyConfiguration(new SalesProgramConfiguration());
-            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
-            modelBuilder.ApplyConfiguration(new SupplierDepositConfiguration());
         }
 
         public DbSet<Supplier> Suppliers { get; set; }
@@ -48,6 +48,8 @@ namespace Infrastructure.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<SalesProgram> SalePrograms { get; set; }
+        public DbSet<SupplierDeposit> SupplierDeposits { get; set; }
+        public DbSet<Commision> Commisions { get; set; }
         public DbSet<DateConfig> DateConfigs { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
     }

@@ -13,7 +13,7 @@ namespace UnitTest
         [Test]
         public void Create()
         {
-            var contract = new ContractItem(1, 1, new DateTime(2023, 07, 01), 2, ProductType.Gas, EnergyUnitType.MCF, 1, 1, 1);
+            var contract = new ContractItem(1, "", new DateTime(2023, 07, 01), 2, ProductType.Gas, EnergyUnitType.MCF, 1, 1, 1);
             Assert.AreEqual(new DateTime(2023, 09, 01), contract.EndDate);
         }
         [Test]
@@ -21,7 +21,7 @@ namespace UnitTest
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var contract = new ContractItem(1, 1, new DateTime(2023, 07, 01), 2, ProductType.Gas, EnergyUnitType.KWH, 1, 1, 1);
+                var contract = new ContractItem(1, "", new DateTime(2023, 07, 01), 2, ProductType.Gas, EnergyUnitType.KWH, 1, 1, 1);
             }, $"ProductType : {ProductType.Gas}  khong phu hop voi Energy : {EnergyUnitType.KWH}");
         }
     }

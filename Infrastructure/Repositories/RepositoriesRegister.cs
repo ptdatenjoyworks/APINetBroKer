@@ -14,6 +14,7 @@ namespace Infrastructure.Repositories
             services.AddScoped<ISuppilerRepository, SupplierRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IContractItemRepository, ContractItemRepository>();
+            services.AddScoped<IContractItemActtachmentRepository, ContractItemActtachmentRepository>();
         }
     }
 }

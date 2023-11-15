@@ -13,12 +13,10 @@ namespace Core.Entities.Contract
 
         [Column("Id")]
         public int? Id { get; set; }
-        //FK Suppliers
-        [ForeignKey(nameof(Suppliers))]
-        public int? SupplierId { get; set; }
-        public Supplier? Suppliers { get; set; }
+        public int? SupplierId { get; private set; }
+        public Supplier? Suppliers { get; private set; }
 
-        public DateTime? PaymentDate { get; set; }
-        public decimal? Amount { get; set; }
+        public DateTime? PaymentDate { get; private set; }
+        public decimal? Amount { get; private set; }
     }
 }

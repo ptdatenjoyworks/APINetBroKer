@@ -3,5 +3,6 @@
     public enum BillingType
     {
         None = 0,
+        ChickenRanch
     }
 }

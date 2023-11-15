@@ -7,7 +7,6 @@ namespace Core.Models.Requests.Contract
 {
     public class ContractItemCreateRequest : BaseClass
     {
-        public int Id { get; set; }
         public int? ContractsId { get; set; }
         public int? UtilityAccountNumber { get; set; }
         public DateTime StartDate { get; set; }
@@ -18,5 +17,7 @@ namespace Core.Models.Requests.Contract
         public decimal? Rate { get; set; }
         public decimal? Adder { get; set; }
         public ICollection< IFormFile> ContractItemAttachment { get; set; }
+
+
     }
 }

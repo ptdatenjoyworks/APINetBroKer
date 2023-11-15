@@ -17,6 +17,7 @@ namespace Domain.Service
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IContractItemService, ContractItemService>();
+            services.AddScoped<IFileService, FileService>();
         }
     }
 }

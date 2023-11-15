@@ -3,5 +3,6 @@
     public enum PricingType
     {
         None = 0,
+        Matrix
     }
 }

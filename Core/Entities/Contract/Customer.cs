@@ -11,7 +11,7 @@ namespace Core.Entities.Contract
 
         [Column("Id")]
         public int? Id { get; init; }
-        public string? Name { get; set; }
+        public string? Name { get; private set; }
 
         public ICollection<Contract>? Contracts { get; private set; }
     }

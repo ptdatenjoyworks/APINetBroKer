@@ -6,17 +6,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
 {
-    public class Contract : BaseClass
+    public class Contract : BaseClass, IIDEntity
     {
    
       
         public Contract() { }
 
-        public Contract(string? legalEntityName,bool isActive, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  int suppliersId, 
+        public Contract(string? legalEntityName, int? customerId,  int? contactId,  int? closerId,  int? fronterId,  int suppliersId, 
             DateTime? soldDate, BillingChargeType billingChargeType, BillingType billingType, EnrollmentType enrollmentType, PricingType pricingType, Stage stage)
         {
             LegalEntityName = legalEntityName;
-            IsActive = isActive;
             CustomerId = customerId;
             ContactId = contactId;
             CloserId = closerId;
@@ -32,26 +31,26 @@ namespace Core.Entities.Contract
 
         [Column("Id")]
         public int Id { get; init; }
-        public string? LegalEntityName { get; set; }
+        public string? LegalEntityName { get; private set; }
         //FK Customer
-        public int? CustomerId { get; set; }
-        public Customer? Customer { get; set; }
+        public int? CustomerId { get; private set; }
+        public Customer? Customer { get; private set; }
         //FK Contact
-        public int? ContactId { get; set; }
-        public Contact? Contact { get; set; }
+        public int? ContactId { get; private set; }
+        public Contact? Contact { get; private set; }
         public int? CloserId { get; private set; }
-        public ApplicationUser? Closer { get; set; }
+        public ApplicationUser? Closer { get; private set; }
         public int? FronterId { get; private set; }
-        public ApplicationUser? Fronter { get; set; }
-        public int SupplierId { get; set; }  
-        public Supplier? Supplier { get; set; } 
-        public ICollection<ContractItem>? ContractItems { get; set; }
+        public ApplicationUser? Fronter { get; private set; }
+        public int SupplierId { get; private set; }  
+        public Supplier? Supplier { get; private set; } 
+        public ICollection<ContractItem>? ContractItems { get; private set; }
 
-        public DateTime? SoldDate { get; set; }
+        public DateTime? SoldDate { get; private set; }
         public BillingChargeType BillingChargeType { get; set; }
-        public BillingType BillingType { get; set; }
-        public EnrollmentType EnrollmentType { get; set; }
-        public PricingType PricingType { get; set; }
+        public BillingType BillingType { get; private set; }
+        public EnrollmentType EnrollmentType { get; private set; }
+        public PricingType PricingType { get; private set; }
         public Stage Stage { get; set; } = Stage.Opportunity;
 
         public void Update(string? legalEntityName, Stage stage, int? customerId, int suppliersId)

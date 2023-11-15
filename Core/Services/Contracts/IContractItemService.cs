@@ -8,7 +8,7 @@ namespace Core.Services.Contracts
     public interface IContractItemService : IServiceBase<ContractItemReponse,ContractItemRequest>
     {
         Task<List<ContractItemReponse>> GetAll();
-        Task Update(ContractItemRequest entity);
+        Task<bool> Update(ContractItemRequest entity, bool isDelete);
         Task<bool> CreateContractItem(ContractItemCreateRequest contractItemRequest);
 
     }

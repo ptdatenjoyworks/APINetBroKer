@@ -32,7 +32,7 @@ namespace APINetBorker.Controllers
         [Route("")]
         public async Task<IActionResult> Create([FromForm] ContractItemCreateRequest contractItemRequest)
         {
-            var result =  await contractItemService.CreateContractItem(contractItemRequest);
+            var result = await contractItemService.CreateContractItem(contractItemRequest);
             return result ? CreateSuccessResult("Create Success") : CreateFailResult("Create faild");
         }
 
@@ -48,9 +48,11 @@ namespace APINetBorker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromBody] ContractItemRequest contractItemRequest)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] ContractItemRequest contractItemRequest)
         {
-            var result = contractItemService.Update(contractItemRequest);
+            contractItemRequest.Id = id;    
+            var result = await contractItemService.Update(contractItemRequest, false);
             return CreateSuccessResult(result);
         }
     }

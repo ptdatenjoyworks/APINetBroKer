@@ -1,4 +1,5 @@
-﻿using Core.Repositories;
+﻿using Core.Entities.Abstract;
+using Core.Repositories;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -72,6 +73,8 @@ namespace Infrastructure.Repositories
         }
 
 
+
+
         public Task UpdateAsync(T entity)
         {
             var entityEntry = DataContext.Entry(entity);
@@ -85,5 +88,22 @@ namespace Infrastructure.Repositories
         {
            return await DataContext.Set<T>().FindAsync(id);
         }
+        public async Task<T> Find(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
+        {
+            var query =  DataContext.Set<T>().Where(expression);
+            if (includes != null)
+            {
+                query = includes.Aggregate(query,
+                          (current, include) => current.Include(include));
+            }
+            return await query.FirstOrDefaultAsync();
+
+        }
+
+       /* public async Task<T> GetLastItem()
+        {
+            var result =  DataContext.Set<T>().OrderByDescending();
+            return result;
+        } */
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Core.Entities.Abstract;
+using Core.Entities.Contract;
 using Core.Entities.Enum;
+using Microsoft.AspNetCore.Http;
 
 namespace Core.Models.Requests.Contract
 {
@@ -15,5 +17,7 @@ namespace Core.Models.Requests.Contract
         public int? AnnualUsage { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Adder { get; set; }
+        public ICollection<FileInputModel> Attachments { get; set; }
+
     }
 }

@@ -2,5 +2,7 @@
 {
     public enum ProgramAdderType
     {
+        None = 0,
+        Override
     }
 }

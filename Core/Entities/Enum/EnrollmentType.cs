@@ -3,5 +3,6 @@
     public enum EnrollmentType
     {
         None = 0,
+        TPV
     }
 }

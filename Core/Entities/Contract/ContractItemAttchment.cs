@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
 {
     public class ContractItemAttchment
     {
-        [Column("Id")]
-        public int? Id { get; set; }
-        public string Path { get; set; }
+        public ContractItemAttchment(string path, int contractItemId)
+        {
+            Path = path;
+            ContractItemId = contractItemId;
+        }
 
-        public int ContractItemId { get; set; }
-        public ContractItem ContractItem { get; set; }
+        [Column("Id")]
+        public int Id { get; private set; }
+        public string Path { get; private set; }
+
+        public int ContractItemId { get; private set; }
+        public ContractItem ContractItem { get; private set; }
+
     }
+
+
 }

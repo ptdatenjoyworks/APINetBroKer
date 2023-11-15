@@ -10,10 +10,13 @@ namespace Core.Repositories
         Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes);
         IQueryable<T> FindByConditionAsyncs(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes);
 
+        Task<T> Find(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes);
+
         Task<T> FindById(int id);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task SaveAsync();
+     
     }
 }

@@ -15,14 +15,14 @@ namespace Core.Entities.Sales
         [Column("Id")]
         public int? Id { get; set; }
 
-        public EnergyUnitType EnergyUnitType { get; set; }
+        public EnergyUnitType EnergyUnitType { get; private set; }
 
-        public string? Description { get; set; }
+        public string? Description { get; private set; }
 
-        public string? SalesProgramType { get; set; }
+        public string? SalesProgramType { get; private set; }
 
-        public ICollection<Qualification> Qualifications { get; set; }
+        public ICollection<Qualification> Qualifications { get; private set; }
 
-        public ICollection<Commision> Commisions { get; set; }
+        public ICollection<Commision> Commisions { get; private set; }
     }
 }

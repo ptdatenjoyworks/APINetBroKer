@@ -3,5 +3,6 @@
     public enum BillingChargeType
     {
         None = 0,
+        AllIn
     }
 }

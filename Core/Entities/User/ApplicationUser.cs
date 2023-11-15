@@ -34,17 +34,17 @@ namespace Core.Entities.User
         }
 
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
-        public string? Address { get; set; }
-        public DateTime? BirthDay { get; set; }
+        public string? Address { get; private set; }
+        public DateTime? BirthDay { get; private set; }
 
         [Required(ErrorMessage = "Full name is required")]
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
         public string? FullName { get; set; }
 
-        public bool IsActive { get; set; } = true;
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public bool IsActive { get; private set; } = true;
+        public DateTime DateCreated { get; private set; } = DateTime.Now;
 
-        public ICollection<Core.Entities.Contract.Contract>? Contracts { get; set; }
+        public ICollection<Core.Entities.Contract.Contract>? Contracts { get; private set; }
 
         public void Update(string? fullName, string email, string? address, DateTime? birthDay, string? phone)
         {
