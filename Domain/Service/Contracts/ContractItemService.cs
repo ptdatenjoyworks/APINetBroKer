@@ -9,6 +9,7 @@ using Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Domain.Service.Contracts
@@ -146,9 +147,24 @@ namespace Domain.Service.Contracts
             throw new NotImplementedException();
         }
 
-        public async Task UpdateContractItem()
+        public async Task<string> DownloadContractItemAttachment(int id)
         {
+            var contractItemAttachment = await contractItemActtachmentRepository.FindById(id);
+            if (contractItemAttachment == null)
+            {
+                return string.Empty;
+            }
+            return contractItemAttachment.Path;
+        }
 
+        public async Task<List<ContractItemAttchment>> DownloadAllContractItemAttachments(int id)
+        {
+            var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x=>x.ContractItemId == id);
+            if(contractItem.Count() > 0)
+            {
+                return contractItem.ToList();
+            }
+            return null;
         }
     }
 }

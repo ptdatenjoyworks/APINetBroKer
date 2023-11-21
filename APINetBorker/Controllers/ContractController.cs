@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Core.Entities.Contract;
 using Core.Models.Requests.Contract;
-using Core.Models.Response.Contracts;
 using Core.Services.Contracts;
-using Domain.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,5 +54,7 @@ namespace APINetBorker.Controllers
             var result = contractService.Update(contractRequest);
             return CreateSuccessResult(result);
         }
+
+        
     }
 }

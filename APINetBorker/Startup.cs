@@ -6,9 +6,11 @@ using Core.Services;
 using Domain.Service;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -52,6 +54,17 @@ namespace APINetBorker
             services.ConfigureIdentity();
 
             services.ConfigureJWT(configuration);
+
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+            });
+
+            services.Configure<FormOptions>(x => x.MultipartBodyLengthLimit = long.MaxValue);
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = long.MaxValue;
+            });
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
