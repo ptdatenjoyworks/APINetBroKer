@@ -55,17 +55,6 @@ namespace APINetBorker
 
             services.ConfigureJWT(configuration);
 
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
-            });
-
-            services.Configure<FormOptions>(x => x.MultipartBodyLengthLimit = long.MaxValue);
-            services.Configure<IISServerOptions>(options =>
-            {
-                options.MaxRequestBodySize = long.MaxValue;
-            });
-
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
