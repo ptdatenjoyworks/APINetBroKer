@@ -169,6 +169,7 @@ namespace Domain.Service.Contracts
                 var listFile = contractItem.Select(x => x.Path).ToList();
 
                 await fileService.GetAllFileDownload(listFile, stream);
+                return;
             }
             throw new ArgumentNullException("not have file download");
         }

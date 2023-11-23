@@ -46,29 +46,23 @@ namespace Domain.Service
 
         public async Task GetAllFileDownload(List<string> files, Stream stream)
         {
-           
-                // Create a new zip archive
-                using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Create))
+
+            // Create a new zip archive
+            using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Create))
+            {
+                foreach (var file in files)
                 {
-                    foreach (var file in files)
+                    // Create a new entry in the zip archive for each file
+                    var entry = zipArchive.CreateEntry(Path.GetFileName(file));
+
+                    // Write the file contents into the entry
+                    using (var entryStream = entry.Open())
+                    using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        // Create a new entry in the zip archive for each file
-                        var entry = zipArchive.CreateEntry(Path.GetFileName(file));
-                        
-                        // Write the file contents into the entry
-                        using (var entryStream = entry.Open())
-                        using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
-                        {
-                          await  fileStream.CopyToAsync(entryStream);
-                        }
+                        await fileStream.CopyToAsync(entryStream);
                     }
                 }
-               // stream.Seek(0, SeekOrigin.Begin);
-                /*if (!FileLengthCaculate(stream.ToArray()))
-                {
-                    throw new ArgumentNullException("attachment file size too big");
-                }*/
-
+            }
         }
 
         public bool FileLengthCaculate(byte[] fileLenght)
