@@ -59,6 +59,11 @@ namespace APINetBorker
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

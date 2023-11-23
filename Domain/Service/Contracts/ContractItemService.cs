@@ -8,6 +8,7 @@ using Core.Services;
 using Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
@@ -147,24 +148,29 @@ namespace Domain.Service.Contracts
             throw new NotImplementedException();
         }
 
-        public async Task<string> DownloadContractItemAttachment(int id)
+        public async Task<Dictionary<string, byte[]>> DownloadContractItemAttachment(int id)
         {
             var contractItemAttachment = await contractItemActtachmentRepository.FindById(id);
             if (contractItemAttachment == null)
             {
-                return string.Empty;
+                throw new ArgumentNullException("Contract Item Attachment not found");
             }
-            return contractItemAttachment.Path;
+
+            var filebyte = fileService.GetFileDownload(contractItemAttachment.Path);
+            var fileName =  Path.GetFileName(contractItemAttachment.Path);
+            return new Dictionary<string, byte[]> { { fileName, filebyte } };
         }
 
-        public async Task<List<ContractItemAttchment>> DownloadAllContractItemAttachments(int id)
+        public async Task DownloadAllContractItemAttachments(int id,Stream stream)
         {
             var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x=>x.ContractItemId == id);
             if(contractItem.Count() > 0)
             {
-                return contractItem.ToList();
+                var listFile = contractItem.Select(x => x.Path).ToList();
+
+                await fileService.GetAllFileDownload(listFile, stream);
             }
-            return null;
+            throw new ArgumentNullException("not have file download");
         }
     }
 }

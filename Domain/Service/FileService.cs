@@ -44,36 +44,31 @@ namespace Domain.Service
             return filebyte;
         }
 
-        public MemoryStream GetAllFileDownload(List<string> files)
+        public async Task GetAllFileDownload(List<string> files, Stream stream)
         {
-            using (var memoryStream = new MemoryStream())
-            {
+           
                 // Create a new zip archive
-                using (var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
                     foreach (var file in files)
                     {
-                        var fileInfo = new FileInfo(file);
-
                         // Create a new entry in the zip archive for each file
-                        var entry = zipArchive.CreateEntry(fileInfo.Name);
-
+                        var entry = zipArchive.CreateEntry(Path.GetFileName(file));
+                        
                         // Write the file contents into the entry
                         using (var entryStream = entry.Open())
                         using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
                         {
-                            fileStream.CopyTo(entryStream);
+                          await  fileStream.CopyToAsync(entryStream);
                         }
                     }
                 }
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                if (!FileLengthCaculate(memoryStream.ToArray()))
+               // stream.Seek(0, SeekOrigin.Begin);
+                /*if (!FileLengthCaculate(stream.ToArray()))
                 {
                     throw new ArgumentNullException("attachment file size too big");
-                }
+                }*/
 
-                return memoryStream;
-            }
         }
 
         public bool FileLengthCaculate(byte[] fileLenght)

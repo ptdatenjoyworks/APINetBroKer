@@ -10,6 +10,6 @@ namespace Core.Services
 
         byte[] GetFileDownload(string path);
 
-        MemoryStream GetAllFileDownload(List<string> files);
+        Task GetAllFileDownload(List<string> files, Stream stream);
     }
 }

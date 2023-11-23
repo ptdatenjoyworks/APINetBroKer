@@ -11,8 +11,8 @@ namespace Core.Services.Contracts
         Task<bool> Update(ContractItemRequest entity, bool isDelete);
         Task<bool> CreateContractItem(ContractItemCreateRequest contractItemRequest);
 
-        Task<string> DownloadContractItemAttachment(int id);
-        Task<List<ContractItemAttchment>> DownloadAllContractItemAttachments(int id);
+        Task<Dictionary<string, byte[]>> DownloadContractItemAttachment(int id);
+        Task DownloadAllContractItemAttachments(int id, Stream stream);
 
     }
 }

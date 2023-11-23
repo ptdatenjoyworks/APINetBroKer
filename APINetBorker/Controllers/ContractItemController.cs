@@ -66,10 +66,8 @@ namespace APINetBorker.Controllers
 
         public async Task<IActionResult> DownloadContractItemAttachment(int id)
         {
-            var path = await contractItemService.DownloadContractItemAttachment(id);
-            var filebyte = fileService.GetFileDownload(path);
-            var filename = Path.GetFileName(path);
-            return File(filebyte, "application/octet-stream", filename);
+            var file = await contractItemService.DownloadContractItemAttachment(id);
+            return File(file.First().Value, "application/octet-stream", file.First().Key.ToString());
         }
 
         [HttpGet]
@@ -80,18 +78,10 @@ namespace APINetBorker.Controllers
         {
             try
             {
-                var attachments = await contractItemService.DownloadAllContractItemAttachments(id);
-                if (attachments == null)
-                {
-                    return CreateFailResult("file not found");
-                }
-
-                var listFile = attachments.Select(x => x.Path).ToList();
-
-                var memoryStream = fileService.GetAllFileDownload(listFile);
-
-                // Return the zip file as a byte array
-                return File(memoryStream.ToArray(), "application/zip", "files.zip");
+                Response.ContentType = "application/octet-stream";
+                Response.Headers.Add("Content-Disposition", $"attachment; filename=\"ContractItemAttachment-{id}-{DateTime.Now.ToString("yyyyMMdd_HH:mm")}.zip\"");
+                await contractItemService.DownloadAllContractItemAttachments(id, Response.BodyWriter.AsStream());
+                return new EmptyResult();
             }
             catch (Exception ex)
             {
