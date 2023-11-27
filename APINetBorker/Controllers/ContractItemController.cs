@@ -9,7 +9,7 @@ using System.IO.Compression;
 
 namespace APINetBorker.Controllers
 {
-    [Route("api/contractItem")]
+    [Route("api/contractItems")]
     [AllowAnonymous]
     public class ContractItemController : ApiControllerBase
     {
@@ -62,17 +62,17 @@ namespace APINetBorker.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("contractItemAttachment/{id}")]
+        [Route("Attachment/{id}")]
 
         public async Task<IActionResult> DownloadContractItemAttachment(int id)
         {
             var file = await contractItemService.DownloadContractItemAttachment(id);
-            return File(file.First().Value, "application/octet-stream", file.First().Key.ToString());
+            return File(file.filebyte, "application/octet-stream", file.filename);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("contractItemAttachments/{id}")]
+        [Route("{id}/Attachments")]
 
         public async Task<IActionResult> DownloadAllAttachment(int id)
         {

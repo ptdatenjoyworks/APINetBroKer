@@ -75,7 +75,8 @@ namespace Domain.Service.Contracts
                         if (file.Length > 0)
                         {
                             var filePath = await fileService.SaveFileAttachment(file);
-                            var attachment = new ContractItemAttchment(filePath, contractItem.Id);
+                            var fileName = Path.GetFileName(filePath);
+                            var attachment = new ContractItemAttchment(fileName, contractItem.Id);
                             contractItem.Attachments.Add(attachment);
                         }
                     }
@@ -122,14 +123,15 @@ namespace Domain.Service.Contracts
                 foreach (var file in newFiles)
                 {
                     var filepath = await fileService.SaveFileAttachment(file?.File);
-                    var attachment = new ContractItemAttchment(filepath, contract.Id);
+                    var fileName = Path.GetFileName(filepath);
+                    var attachment = new ContractItemAttchment(fileName, contract.Id);
                     contract.Attachments.Add(attachment);
                 }
                 //xoa file id co trong db nhung ko có trong list submit
                 var listIdDb = contract.Attachments.Select(x => x.Id);
                 var listIdSummit = entity.Attachments.Select(x => x.Id);
                 var deleteAttachment = listIdDb.Except(listIdSummit).ToList();
-                if (deleteAttachment.Count() > 0)
+                if (deleteAttachment.Any())
                 {
                     foreach (var attachmentId in deleteAttachment)
                     {
@@ -148,7 +150,7 @@ namespace Domain.Service.Contracts
             throw new NotImplementedException();
         }
 
-        public async Task<Dictionary<string, byte[]>> DownloadContractItemAttachment(int id)
+        public async Task<(string, byte[])> DownloadContractItemAttachment(int id)
         {
             var contractItemAttachment = await contractItemActtachmentRepository.FindById(id);
             if (contractItemAttachment == null)
@@ -157,14 +159,14 @@ namespace Domain.Service.Contracts
             }
 
             var filebyte = fileService.GetFileDownload(contractItemAttachment.Path);
-            var fileName =  Path.GetFileName(contractItemAttachment.Path);
-            return new Dictionary<string, byte[]> { { fileName, filebyte } };
+            var fileName = Path.GetFileName(contractItemAttachment.Path);
+            return (fileName, filebyte);
         }
 
-        public async Task DownloadAllContractItemAttachments(int id,Stream stream)
+        public async Task DownloadAllContractItemAttachments(int id, Stream stream)
         {
-            var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x=>x.ContractItemId == id);
-            if(contractItem.Count() > 0)
+            var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x => x.ContractItemId == id);
+            if (contractItem.Any())
             {
                 var listFile = contractItem.Select(x => x.Path).ToList();
 

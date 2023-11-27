@@ -31,12 +31,13 @@ namespace Domain.Service
 
         public byte[] GetFileDownload(string path)
         {
-            if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path))
+            var filePath = Path.Combine(FilePath, path);
+
+            if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(filePath))
             {
                 throw new ArgumentNullException("File not found");
             }
-
-            var filebyte = System.IO.File.ReadAllBytes(path);
+            var filebyte = System.IO.File.ReadAllBytes(filePath);
             if (!FileLengthCaculate(filebyte))
             {
                 throw new ArgumentNullException("attachment file size too big");
@@ -53,11 +54,13 @@ namespace Domain.Service
                 foreach (var file in files)
                 {
                     // Create a new entry in the zip archive for each file
-                    var entry = zipArchive.CreateEntry(Path.GetFileName(file));
+                    var entry = zipArchive.CreateEntry(file);
+
+                    var filePath = Path.Combine(FilePath,file);
 
                     // Write the file contents into the entry
                     using (var entryStream = entry.Open())
-                    using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         await fileStream.CopyToAsync(entryStream);
                     }
