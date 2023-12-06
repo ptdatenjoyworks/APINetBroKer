@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Core.Entities.Contract;
+using Core.Entities.Enum;
 using Core.Models.Requests.Contract;
 using Core.Models.Response.Contracts;
 using Core.Repositories.Contract;
@@ -175,5 +176,22 @@ namespace Domain.Service.Contracts
             }
             throw new ArgumentNullException("not have file download");
         }
+
+        public async Task<(bool, string)> VerifityContract(int contractId)
+        {
+            var contractItems = await contractItemRepository.FindByConditionAsync(x=>x.ContractsId == contractId);
+            if (!contractItems.Any())
+            {
+                return (false, "not have contract item");
+            }
+            foreach (var item in contractItems)
+            {
+              //item.Verifity()
+            }
+
+            return (true, "");
+        }
+
+
     }
 }

@@ -56,5 +56,44 @@ namespace Domain.Service.Contracts
                 await contractRepository.SaveAsync();
             }
         }
+
+      /*  public async Task<(bool,string)> VerifityContract(int id)
+        {
+            var contract = await contractRepository.FindById(id);
+            if (!contract.ContractItems.Any())
+            {
+                return (false, "not have contract item");
+            }
+            foreach (var item in contract.ContractItems)
+            {
+                if (item.Status == Status.None || item.Status == Status.Rejected)
+                {
+                    item.ForecastState = item.Status == Status.None ? ForecastState.InvalidSalesData : ForecastState.RejectedDeal;
+                    await contractRepository.SaveAsync();
+                    return (false, "contract item status none");
+                }
+                if (item.Contracts == null)
+                {
+                    item.ForecastState = ForecastState.InvalidSalesData;
+                }
+                if (item.SalesProgram == null)
+                {
+                    item.ForecastState = ForecastState.MissingSalesProgram;
+                }
+                int qualificationsEnable = 0;
+                foreach (var quafi in item.SalesProgram.Qualifications)
+                {
+                    if (quafi.QualificationVerifity()) { qualificationsEnable++; }
+                }
+                if (qualificationsEnable < 0)
+                {
+                    item.ForecastState = ForecastState.MissingSalesProgram;
+                }
+
+
+            }
+
+            return (true, "");
+        }*/
     }
 }

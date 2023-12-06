@@ -42,11 +42,12 @@ namespace Core.Entities.Contract
         public ApplicationUser? Closer { get; private set; }
         public int? FronterId { get; private set; }
         public ApplicationUser? Fronter { get; private set; }
-        public int SupplierId { get; private set; }  
+        public int? SupplierId { get; private set; }  
         public Supplier? Supplier { get; private set; } 
         public ICollection<ContractItem>? ContractItems { get; private set; }
 
         public DateTime? SoldDate { get; private set; }
+        public DateTime? StartDate { get; private set; }
         public BillingChargeType BillingChargeType { get; set; }
         public BillingType BillingType { get; private set; }
         public EnrollmentType EnrollmentType { get; private set; }

@@ -1,11 +1,13 @@
-﻿using Core.Entities.Enum;
+﻿using Core.Entities.Contract;
+using Core.Entities.Enum;
+using Core.Extensions;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Sales
 {
     public class DateConfig
     {
-        public DateConfig(int? commisionId, ControlDateType controlDateType, ControlDateModifierType controlDateModifierType, ControlDateOffsetType controlDateOffsetType, int? controlDateOffsetValue)
+        public DateConfig(int? commisionId, ControlDateType controlDateType, ControlDateModifierType controlDateModifierType, ControlDateOffsetType controlDateOffsetType, int controlDateOffsetValue)
         {
             CommisionId = commisionId;
             ControlDateType = controlDateType;
@@ -25,6 +27,99 @@ namespace Core.Entities.Sales
         public ControlDateType ControlDateType { get; private set; }
         public ControlDateModifierType ControlDateModifierType { get; private set; }
         public ControlDateOffsetType ControlDateOffsetType { get; private set; }
-        public int? ControlDateOffsetValue { get; private set; }
+        public int ControlDateOffsetValue { get; private set; }
+
+        public DateTime? ControlDate(Contract.ContractItem contractItem)
+
+        {
+            switch (ControlDateType)
+            {
+                case ControlDateType.SoldDate:
+                    return contractItem?.Contracts?.SoldDate;
+                case ControlDateType.ServiceStartDate:
+                    return contractItem?.StartDate;
+                case ControlDateType.CustomerInvoiceDate:
+                    return contractItem?.StartDate.AddMonths(1);
+                case ControlDateType.CustomerPaymentDate:
+                    return contractItem?.StartDate.AddMonths(2);
+                case ControlDateType.SupplierInvoiceDate:
+                    return contractItem?.StartDate.GetNextDayOfWeek(DayOfWeek.Tuesday);
+                case ControlDateType.UtilityAcceptanceDate:
+                    return contractItem?.StartDate.AddMonths(-1);
+                default: return null;
+            }
+        }
+
+        public DateTime ControlDateModifier(DateTime date)
+        {
+            switch (ControlDateModifierType)
+            {
+                case ControlDateModifierType.NoModifier:
+                    return date;
+                case ControlDateModifierType.EndOfMonth:
+                    return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+                case ControlDateModifierType.EndOfQuarter:
+                    return date.GetLastDayOfQuarter();
+                case ControlDateModifierType.OneMonthAfter:
+                    return date.AddMonths(1);
+                case ControlDateModifierType.TwoMonthsAfter:
+                    return date.AddMonths(2);
+                case ControlDateModifierType.ThreeMonthsAfter:
+                    return date.AddMonths(3);
+                case ControlDateModifierType.Days2ndOr16thOfMonthAfter:
+                    return date.GetDays2ndOr16thOfMonthAfter();
+                case ControlDateModifierType.DaysAfter15thOfMonthAfter:
+                    return new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, 15);
+                case ControlDateModifierType.OneYearAfter:
+                    return date.AddYears(1);
+                case ControlDateModifierType.Minus3Months:
+                    return date.AddMonths(-3);
+                case ControlDateModifierType.Minus5Months:
+                    return date.AddMonths(-5);
+                case ControlDateModifierType.FirstFridayAfter:
+                    return date.GetNextFriday();
+                case ControlDateModifierType.DayUpToOrAfter23rd:
+                    return date.Day <= 23 ? new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, DateTime.DaysInMonth(date.AddMonths(1).Year, date.AddMonths(1).Month)) : new DateTime(date.AddMonths(2).Year, date.AddMonths(2).Month, DateTime.DaysInMonth(date.AddMonths(2).Year, date.AddMonths(2).Month));
+                case ControlDateModifierType.LastThursdayOfMonth:
+                    return date.GetLastThurdayOfMonth();
+                case ControlDateModifierType.Minus2Years:
+                    return date.AddYears(-2);
+                case ControlDateModifierType.CutOff15ofMonthFollowingWednesday:
+                    return date.CutOff15ofMonthFollowingWednesday(DayOfWeek.Wednesday);
+                case ControlDateModifierType.CutOff15ofMonthFollowingThursday:
+                    return date.CutOff15ofMonthFollowingWednesday(DayOfWeek.Thursday);
+                default:
+                    return date;
+            }
+        }
+
+        public DateTime ControlDateOffset(DateTime date)
+        {
+            if(ControlDateOffsetValue < 0)
+            {
+                return date;
+            }
+            switch (ControlDateOffsetType)
+            {
+                case ControlDateOffsetType.NoOffset:
+                    return date;
+                case ControlDateOffsetType.BusinessDays:
+                    return date.AddDaysCustom(ControlDateOffsetValue);
+                case ControlDateOffsetType.CalendarDays:
+                    return date.AddDays(ControlDateOffsetValue);
+                case ControlDateOffsetType.DayOfMonth:
+                    return ControlDateOffsetValue > DateTime.DaysInMonth(date.Year,date.Month) ? new DateTime(date.Year,date.Month, DateTime.DaysInMonth(date.Year, date.Month)) : new DateTime(date.Year,date.Month, ControlDateOffsetValue);
+                case ControlDateOffsetType.DayOfWeek_Fridays:
+                    return date.GetFridayAfterWeek(ControlDateOffsetValue);
+                case ControlDateOffsetType.Months:
+                    return date.AddMonths(ControlDateOffsetValue);
+                case ControlDateOffsetType.Years:
+                    return date.AddYears(ControlDateOffsetValue);
+                case ControlDateOffsetType.FirstDayAfterOffSet_Fridays:
+                    return new DateTime(date.Year, date.Month, ControlDateOffsetValue).GetNextFriday() ;
+                default: return date;
+            }
+        }
+
     }
 }
