@@ -1,11 +1,17 @@
-﻿namespace Core.Extensions
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Core.Extensions
 {
     public static class CalenderHelper
     {
         public static DateTime GetNextDayOfWeek(this DateTime startDate, DayOfWeek dayOfWeek)
         {
+            if (startDate.DayOfWeek == dayOfWeek)
+            {
+                startDate = startDate.AddDays(1);
+            }
             int daysUntilNextDay = ((int)dayOfWeek - (int)startDate.DayOfWeek + 7) % 7;
-            return startDate.AddDays(daysUntilNextDay + 7);
+            return startDate.AddDays(daysUntilNextDay);
         }
 
         public static DateTime GetLastDayOfQuarter(this DateTime date)
@@ -48,24 +54,18 @@
         {
             var datecutoff = new DateTime(date.Year, date.Month, 15);
             var is15ofMonthIsDayOfWeek = datecutoff.DayOfWeek == dayOfWeek;
-            if (is15ofMonthIsDayOfWeek)
+            DateTime dateSelect = datecutoff;
+            if (!is15ofMonthIsDayOfWeek)
             {
-                if (datecutoff.Day > date.Day)
-                {
-                    return datecutoff;
-                }
-                else
-                {
-                    var dateNextMonth = datecutoff.AddMonths(1);
-                    int daysUntil = ((int)dayOfWeek - (int)dateNextMonth.DayOfWeek + 7) % 7;
-                    return dateNextMonth.AddDays(daysUntil);
-                }
+                dateSelect = datecutoff.GetNextDayOfWeek(dayOfWeek);
+            }
+            if(dateSelect.Day > date.Day)
+            {
+                return dateSelect;
             }
             else
             {
-                var dateNextMonth = datecutoff.AddMonths(1);
-                int daysUntil = ((int)dayOfWeek - (int)dateNextMonth.DayOfWeek + 7) % 7;
-                return dateNextMonth.AddDays(daysUntil);
+                return datecutoff.AddMonths(1).GetNextDayOfWeek(dayOfWeek);
             }
         }
 

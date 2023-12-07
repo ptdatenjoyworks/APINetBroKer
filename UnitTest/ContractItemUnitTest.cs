@@ -40,8 +40,8 @@ namespace UnitTest
         [TestCase(ControlDateModifierType.FirstFridayAfter, "2023-12-05", "2023-12-08")]
         [TestCase(ControlDateModifierType.DayUpToOrAfter23rd, "2023-12-05", "2024-01-31")]
         [TestCase(ControlDateModifierType.Minus2Years, "2023-12-05", "2021-12-05")]
-        [TestCase(ControlDateModifierType.CutOff15ofMonthFollowingWednesday, "2023-12-05", "2024-01-17")]
-        [TestCase(ControlDateModifierType.CutOff15ofMonthFollowingThursday, "2023-12-05", "2024-01-18")]
+        [TestCase(ControlDateModifierType.CutOff15ofMonthFollowingWednesday, "2023-12-05", "2023-12-20")]
+        [TestCase(ControlDateModifierType.CutOff15ofMonthFollowingThursday, "2023-12-05", "2023-12-21")]
         [TestCase(ControlDateModifierType.LastThursdayOfMonth, "2023-12-01", "2023-12-28")]
 
         public void ControlDateModifierTest(ControlDateModifierType type, string inputDate, string result)
@@ -69,13 +69,13 @@ namespace UnitTest
             Assert.AreEqual(DateTime.Parse(result), date);
         }
         [Test]
-        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-04", "2023-12-22")]
-        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays, "2023-12-11", "2023-12-08")]
-        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-09", "2023-12-22")]
-        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-11", "2023-12-31")]
-        public void ControlDateOffsetTest(ControlDateOffsetType type,string startdate, string result)
+        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-04",2 ,"2023-12-22")]
+        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays, "2023-12-11", 2,"2023-12-08")]
+        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-09", 2,"2023-12-22")]
+        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays , "2023-12-11", 32,"2024-01-05")]
+        public void ControlDateOffsetTest(ControlDateOffsetType type,string startdate, int offset, string result)
         {
-            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, type, 2);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, type, offset);
 
             var date = dateConfig.ControlDateOffset(DateTime.Parse(startdate));
 

@@ -43,7 +43,7 @@ namespace Core.Entities.Sales
                 case ControlDateType.CustomerPaymentDate:
                     return contractItem?.StartDate.AddMonths(2);
                 case ControlDateType.SupplierInvoiceDate:
-                    return contractItem?.StartDate.GetNextDayOfWeek(DayOfWeek.Tuesday);
+                    return contractItem?.StartDate.GetNextDayOfWeek(DayOfWeek.Monday).GetNextDayOfWeek(DayOfWeek.Tuesday);
                 case ControlDateType.UtilityAcceptanceDate:
                     return contractItem?.StartDate.AddMonths(-1);
                 default: return null;
@@ -118,6 +118,10 @@ namespace Core.Entities.Sales
                 case ControlDateOffsetType.Years:
                     return date.AddYears(ControlDateOffsetValue);
                 case ControlDateOffsetType.FirstDayAfterOffSet_Fridays:
+                    if(ControlDateOffsetValue > DateTime.DaysInMonth(date.Year, date.Month))
+                    {
+                        ControlDateOffsetValue = DateTime.DaysInMonth(date.Year, date.Month);
+                    }
                     return new DateTime(date.Year, date.Month, ControlDateOffsetValue).GetNextFriday();
                 default: return date;
             }
