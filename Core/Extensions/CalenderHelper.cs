@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Extensions
+﻿namespace Core.Extensions
 {
     public static class CalenderHelper
     {
@@ -25,37 +19,35 @@ namespace Core.Extensions
 
         public static DateTime GetDays2ndOr16thOfMonthAfter(this DateTime date)
         {
-            if (date.Day < 16)
-            {
-                return new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, 2);
-            }
-            else
-            {
-                return new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, 16);
-            }
+            date = date.AddMonths(1);
+            return date.Day < 16 ? new DateTime(date.Year, date.Month, 2) : new DateTime(date.Year, date.Month, 16);
         }
         public static DateTime GetNextFriday(this DateTime date)
         {
+            if(date.DayOfWeek == DayOfWeek.Friday)
+            {
+                date = date.AddDays(1);
+            }
             var dateCount = ((int)DayOfWeek.Friday - (int)date.DayOfWeek + 7) % 7;
             return date.AddDays(dateCount);
         }
         public static DateTime GetLastThurdayOfMonth(this DateTime date)
         {
             var lastDateOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-            var datediff = (lastDateOfMonth - date).Days + 1;
-            var lastThursdaysBetweenDates = Enumerable.Range(0, datediff)
-    .Select(x => date.AddDays(x))
-    .Where(d => d.DayOfWeek == DayOfWeek.Thursday)
-    .GroupBy(d => d.Month)
-    .Select(grp => grp.Max(d => d));
-            return lastThursdaysBetweenDates.FirstOrDefault(); ;
+            if(lastDateOfMonth.DayOfWeek == DayOfWeek.Thursday)
+            {
+                return lastDateOfMonth;
+            }
+            var dateCount = ((int)DayOfWeek.Thursday - (int)lastDateOfMonth.DayOfWeek + 7) % 7;
+
+            return lastDateOfMonth.AddDays(dateCount - 7);
+
         }
 
-        public static DateTime CutOff15ofMonthFollowingWednesday(this DateTime date, DayOfWeek dayOfWeek)
+        public static DateTime CutOff15ofMonthFollow(this DateTime date, DayOfWeek dayOfWeek)
         {
             var datecutoff = new DateTime(date.Year, date.Month, 15);
             var is15ofMonthIsDayOfWeek = datecutoff.DayOfWeek == dayOfWeek;
-            var datediff = (new DateTime(datecutoff.AddMonths(1).Year, datecutoff.AddMonths(1).Month, DateTime.DaysInMonth(datecutoff.AddMonths(1).Year, datecutoff.AddMonths(1).Month)) - datecutoff.AddMonths(1)).Days + 1;
             if (is15ofMonthIsDayOfWeek)
             {
                 if (datecutoff.Day > date.Day)
@@ -64,27 +56,21 @@ namespace Core.Extensions
                 }
                 else
                 {
-                    var firstDateAfterDate15 = Enumerable.Range(0, datediff)
-                                                .Select(x => datecutoff.AddMonths(1).AddDays(x))
-                                                .Where(d => d.DayOfWeek == dayOfWeek)
-                                                .GroupBy(d => d.Month)
-                                                .Select(grp => grp.Min(d => d));
-                    return firstDateAfterDate15.FirstOrDefault();
+                    var dateNextMonth = datecutoff.AddMonths(1);
+                    int daysUntil = ((int)dayOfWeek - (int)dateNextMonth.DayOfWeek + 7) % 7;
+                    return dateNextMonth.AddDays(daysUntil);
                 }
             }
             else
             {
-                var firstDateAfterDate15 = Enumerable.Range(0, datediff)
-                                            .Select(x => datecutoff.AddMonths(1).AddDays(x))
-                                            .Where(d => d.DayOfWeek == dayOfWeek)
-                                            .GroupBy(d => d.Month)
-                                            .Select(grp => grp.Min(d => d));
-                return firstDateAfterDate15.FirstOrDefault();
+                var dateNextMonth = datecutoff.AddMonths(1);
+                int daysUntil = ((int)dayOfWeek - (int)dateNextMonth.DayOfWeek + 7) % 7;
+                return dateNextMonth.AddDays(daysUntil);
             }
         }
 
-        public static DateTime AddDaysCustom(this DateTime date, int dayAdd)
-        {
+        public static DateTime AddBusinessDays(this DateTime date, int dayAdd)
+        {  
             while (dayAdd > 0)
             {
                 date = date.AddDays(1);
@@ -99,16 +85,24 @@ namespace Core.Extensions
         public static DateTime GetFridayAfterWeek(this DateTime date , int offsetValue)
         {
             DayOfWeek currentDayOfWeek = date.DayOfWeek;
-            int daysUntilFriday = ((int)DayOfWeek.Friday - (int)currentDayOfWeek + 7) % 7;
-
-         /*   // Nếu là thứ 6, thì lấy ngày hôm sau (thứ 7)
-            if (currentDayOfWeek == DayOfWeek.Friday)
+            int daysUntilFriday = 0;
+            if ((int)currentDayOfWeek >= (int)DayOfWeek.Friday)
             {
-                daysUntilFriday = 1;
-            }*/
-
+                daysUntilFriday = (int)DayOfWeek.Friday - (int)currentDayOfWeek;
+            }
+            else
+            {
+                daysUntilFriday = ((int)DayOfWeek.Friday - (int)currentDayOfWeek + 7) % 7;
+            }
             int totalDays = offsetValue * 7 + daysUntilFriday;
             return date.AddDays(totalDays);
+        }
+
+        public static DateTime GetLastDateOfMonth(this DateTime date,int monthAdd) 
+        {
+            date = date.AddMonths(monthAdd);
+            date = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+            return date;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Core.Entities.Sales
                 case ControlDateModifierType.NoModifier:
                     return date;
                 case ControlDateModifierType.EndOfMonth:
-                    return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+                    return date.GetLastDateOfMonth(0);
                 case ControlDateModifierType.EndOfQuarter:
                     return date.GetLastDayOfQuarter();
                 case ControlDateModifierType.OneMonthAfter:
@@ -69,7 +69,8 @@ namespace Core.Entities.Sales
                 case ControlDateModifierType.Days2ndOr16thOfMonthAfter:
                     return date.GetDays2ndOr16thOfMonthAfter();
                 case ControlDateModifierType.DaysAfter15thOfMonthAfter:
-                    return new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, 15);
+                    date = date.AddMonths(1);
+                    return new DateTime(date.Year, date.Month, 15);
                 case ControlDateModifierType.OneYearAfter:
                     return date.AddYears(1);
                 case ControlDateModifierType.Minus3Months:
@@ -79,15 +80,15 @@ namespace Core.Entities.Sales
                 case ControlDateModifierType.FirstFridayAfter:
                     return date.GetNextFriday();
                 case ControlDateModifierType.DayUpToOrAfter23rd:
-                    return date.Day <= 23 ? new DateTime(date.AddMonths(1).Year, date.AddMonths(1).Month, DateTime.DaysInMonth(date.AddMonths(1).Year, date.AddMonths(1).Month)) : new DateTime(date.AddMonths(2).Year, date.AddMonths(2).Month, DateTime.DaysInMonth(date.AddMonths(2).Year, date.AddMonths(2).Month));
+                    return date.Day <= 23 ? date.GetLastDateOfMonth(1) : date.GetLastDateOfMonth(2);
                 case ControlDateModifierType.LastThursdayOfMonth:
                     return date.GetLastThurdayOfMonth();
                 case ControlDateModifierType.Minus2Years:
                     return date.AddYears(-2);
                 case ControlDateModifierType.CutOff15ofMonthFollowingWednesday:
-                    return date.CutOff15ofMonthFollowingWednesday(DayOfWeek.Wednesday);
+                    return date.CutOff15ofMonthFollow(DayOfWeek.Wednesday);
                 case ControlDateModifierType.CutOff15ofMonthFollowingThursday:
-                    return date.CutOff15ofMonthFollowingWednesday(DayOfWeek.Thursday);
+                    return date.CutOff15ofMonthFollow(DayOfWeek.Thursday);
                 default:
                     return date;
             }
@@ -95,7 +96,7 @@ namespace Core.Entities.Sales
 
         public DateTime ControlDateOffset(DateTime date)
         {
-            if(ControlDateOffsetValue < 0)
+            if (ControlDateOffsetValue < 0)
             {
                 return date;
             }
@@ -104,11 +105,12 @@ namespace Core.Entities.Sales
                 case ControlDateOffsetType.NoOffset:
                     return date;
                 case ControlDateOffsetType.BusinessDays:
-                    return date.AddDaysCustom(ControlDateOffsetValue);
+                    return date.AddBusinessDays(ControlDateOffsetValue);
                 case ControlDateOffsetType.CalendarDays:
                     return date.AddDays(ControlDateOffsetValue);
                 case ControlDateOffsetType.DayOfMonth:
-                    return ControlDateOffsetValue > DateTime.DaysInMonth(date.Year,date.Month) ? new DateTime(date.Year,date.Month, DateTime.DaysInMonth(date.Year, date.Month)) : new DateTime(date.Year,date.Month, ControlDateOffsetValue);
+                    var lastDateOfMonth = DateTime.DaysInMonth(date.Year, date.Month);
+                    return ControlDateOffsetValue > lastDateOfMonth ? new DateTime(date.Year, date.Month, lastDateOfMonth) : new DateTime(date.Year, date.Month, ControlDateOffsetValue);
                 case ControlDateOffsetType.DayOfWeek_Fridays:
                     return date.GetFridayAfterWeek(ControlDateOffsetValue);
                 case ControlDateOffsetType.Months:
@@ -116,7 +118,7 @@ namespace Core.Entities.Sales
                 case ControlDateOffsetType.Years:
                     return date.AddYears(ControlDateOffsetValue);
                 case ControlDateOffsetType.FirstDayAfterOffSet_Fridays:
-                    return new DateTime(date.Year, date.Month, ControlDateOffsetValue).GetNextFriday() ;
+                    return new DateTime(date.Year, date.Month, ControlDateOffsetValue).GetNextFriday();
                 default: return date;
             }
         }
