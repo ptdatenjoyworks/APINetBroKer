@@ -40,6 +40,12 @@ namespace Infrastructure.Context
             modelBuilder.ApplyConfiguration(new DateConfigConfiguration());
             modelBuilder.ApplyConfiguration(new QualificationConfiguration());
             modelBuilder.ApplyConfiguration(new SalesProgramConfiguration());
+            modelBuilder.ApplyConfiguration(new QualificationDateConfiguration());
+            modelBuilder.ApplyConfiguration(new QualificationAnnualUsageConfiguration());
+            modelBuilder.ApplyConfiguration(new ContractUpfrontConfiguration());
+            modelBuilder.ApplyConfiguration(new PercentageContractResidualConfiguration());
+            modelBuilder.ApplyConfiguration(new QuarterlyUpfrontConfiguration());
+
         }
 
         public DbSet<Supplier> Suppliers { get; set; }

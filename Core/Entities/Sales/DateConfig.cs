@@ -29,24 +29,24 @@ namespace Core.Entities.Sales
         public ControlDateOffsetType ControlDateOffsetType { get; private set; }
         public int ControlDateOffsetValue { get; private set; }
 
-        public DateTime? ControlDate(Contract.ContractItem contractItem)
+        public DateTime ControlDate(Contract.ContractItem contractItem)
 
         {
             switch (ControlDateType)
             {
                 case ControlDateType.SoldDate:
-                    return contractItem?.Contracts?.SoldDate;
+                    return contractItem.Contracts?.SoldDate ?? DateTime.MinValue;
                 case ControlDateType.ServiceStartDate:
-                    return contractItem?.StartDate;
+                    return contractItem?.StartDate ?? DateTime.MinValue;
                 case ControlDateType.CustomerInvoiceDate:
-                    return contractItem?.StartDate.AddMonths(1);
+                    return contractItem?.StartDate.AddMonths(1) ?? DateTime.MinValue;
                 case ControlDateType.CustomerPaymentDate:
-                    return contractItem?.StartDate.AddMonths(2);
+                    return contractItem?.StartDate.AddMonths(2) ?? DateTime.MinValue;
                 case ControlDateType.SupplierInvoiceDate:
-                    return contractItem?.StartDate.GetNextDayOfWeek(DayOfWeek.Monday).GetNextDayOfWeek(DayOfWeek.Tuesday);
+                    return contractItem?.StartDate.GetNextDayOfWeek(DayOfWeek.Monday).GetNextDayOfWeek(DayOfWeek.Tuesday) ?? DateTime.MinValue;
                 case ControlDateType.UtilityAcceptanceDate:
-                    return contractItem?.StartDate.AddMonths(-1);
-                default: return null;
+                    return contractItem?.StartDate.AddMonths(-1) ?? DateTime.MinValue;
+                default: return DateTime.MinValue;
             }
         }
 
@@ -126,6 +126,14 @@ namespace Core.Entities.Sales
                 default: return date;
             }
         }
+
+        public DateTime GetDateConfig(ContractItem contractItem)
+        {
+            var dateControl = ControlDate(contractItem);
+            var dateControlDateModifier = ControlDateModifier(dateControl);
+            return ControlDateOffset(dateControlDateModifier);
+        }
+        
 
     }
 }

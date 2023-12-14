@@ -15,9 +15,10 @@ namespace Infrastructure.Context.Configurations
             builder.HasOne(x => x.Contracts).WithMany(x => x.ContractItems).HasForeignKey(x => x.ContractsId);
 
             builder.HasMany(x => x.Attachments).WithOne(x => x.ContractItem).HasForeignKey(x=>x.ContractItemId);
+            builder.HasMany(x => x.ContractItemForecasts).WithOne(x => x.ContractItem).HasForeignKey(x=>x.ContractItemId);
 
             builder.HasData(
-                new ContractItem(1, "9138014006", new DateTime(2023, 04, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m) { Id = 1 },
+                new ContractItem(1, "9138014006", new DateTime(2023, 04, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m) { Id = 1} ,
                 new ContractItem(1, "9138014006", new DateTime(2023, 03, 20), 16, ProductType.Gas, EnergyUnitType.CCF, 12303, 0.2275m, 0.073m) { Id = 2 },
                 new ContractItem(1, "9138014006", new DateTime(2023, 04, 20), 12, ProductType.Elec, EnergyUnitType.MWH, 835, 23, 6.3m) { Id = 3 },
                 new ContractItem(1, "9138014006", new DateTime(2023, 05, 13), 15, ProductType.Elec, EnergyUnitType.KWH, 160880, 0.02275m, 0.0073m) { Id = 4 },

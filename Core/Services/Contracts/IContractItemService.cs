@@ -11,6 +11,8 @@ namespace Core.Services.Contracts
 
         Task<(string filename, byte[] filebyte)> DownloadContractItemAttachment(int id);
         Task DownloadAllContractItemAttachments(int id, Stream stream);
+        Task<(bool, string)> VerifityContract(int contractId);
+        Task<(bool, string)> ForecastContractItem(int contractId);
 
     }
 }

@@ -2,16 +2,20 @@
 using AutoMapper.QueryableExtensions;
 using Core.Entities.Contract;
 using Core.Entities.Enum;
+using Core.Entities.Sales;
 using Core.Models.Requests.Contract;
 using Core.Models.Response.Contracts;
 using Core.Repositories.Contract;
+using Core.Repositories.Sale;
 using Core.Services;
 using Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.WebSockets;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Domain.Service.Contracts
@@ -19,17 +23,23 @@ namespace Domain.Service.Contracts
     public class ContractItemService : IContractItemService
     {
         private readonly IContractItemRepository contractItemRepository;
+        private readonly ISalesProgramRepository salesProgramRepository;
         private readonly IContractItemActtachmentRepository contractItemActtachmentRepository;
         private readonly IFileService fileService;
         private IMapper mapper;
         private string FilePath = $"{AppDomain.CurrentDomain.BaseDirectory}ContractItemAttchments";
+        public List<SalesProgram> SalesPrograms { get; private set; }
+        public int Success { get; private set; }
+        public int Faild { get; private set; }
 
-        public ContractItemService(IContractItemRepository contractItemRepository, IContractItemActtachmentRepository contractItemActtachmentRepository, IMapper mapper, IFileService fileService)
+
+        public ContractItemService(IContractItemRepository contractItemRepository, IContractItemActtachmentRepository contractItemActtachmentRepository, IMapper mapper, IFileService fileService, ISalesProgramRepository salesProgramRepository)
         {
             this.contractItemRepository = contractItemRepository;
             this.mapper = mapper;
             this.contractItemActtachmentRepository = contractItemActtachmentRepository;
             this.fileService = fileService;
+            this.salesProgramRepository = salesProgramRepository;
         }
         public Task<ContractItemReponse> Create(ContractItemReponse entity)
         {
@@ -166,7 +176,7 @@ namespace Domain.Service.Contracts
 
         public async Task DownloadAllContractItemAttachments(int id, Stream stream)
         {
-            var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x => x.ContractItemId == id);
+            var contractItem = await contractItemActtachmentRepository.FindByConditionAsync(x => x.ContractItemId == id );
             if (contractItem.Any())
             {
                 var listFile = contractItem.Select(x => x.Path).ToList();
@@ -179,18 +189,39 @@ namespace Domain.Service.Contracts
 
         public async Task<(bool, string)> VerifityContract(int contractId)
         {
-            var contractItems = await contractItemRepository.FindByConditionAsync(x=>x.ContractsId == contractId);
+            var contractItems = await contractItemRepository.FindByConditionAsync(x => x.ContractsId == contractId, p => p.Contracts);
+
             if (!contractItems.Any())
             {
                 return (false, "not have contract item");
             }
-            foreach (var item in contractItems)
-            {
-              //item.Verifity()
-            }
+            var salePrograms = salesProgramRepository.GetAllAsQueryable().Include(p=>p.Qualifications).Include(x=>x.Commisions).ThenInclude(t=>t.DateConfig).ToList();
+            var a = Parallel.ForEach(contractItems, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, (e) => Vertifi(e, salePrograms));
+            Success = contractItems.Count(x => x.ForecastState == ForecastState.Reforecast);
+            Faild = contractItems.Count(x => x.ForecastState != ForecastState.Reforecast);
 
+            await contractItemRepository.SaveAsync();
+
+            return (true, $"Contract Success :  {Success} And Contract Faild : {Faild}");
+        }
+
+        public void Vertifi(ContractItem contractItem, List<SalesProgram> salesPrograms)
+        {
+            _ = contractItem.Verifity(salesPrograms) ? Success++ : Faild++;
+        }
+        public async Task<(bool, string)> ForecastContractItem(int contractId)
+        {
+            var contractItems = await contractItemRepository.FindByConditionAsync(x => x.ContractsId == contractId, p => p.Contracts);
+            if (!contractItems.Any())
+            {
+                return (false, "not have contract item");
+            }
+            var salePrograms = salesProgramRepository.GetAllAsQueryable().Include(p => p.Qualifications).Include(x => x.Commisions).ThenInclude(t => t.DateConfig).ToList();
+            var a = contractItems.FirstOrDefault().Forecast(salePrograms);
             return (true, "");
         }
+
+
 
 
     }

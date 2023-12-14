@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APINetBorker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231208093247_updateDatabase")]
+    partial class updateDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -204,9 +207,6 @@ namespace APINetBorker.Migrations
                     b.Property<int?>("AnnualUsage")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("ContractMargin")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("ContractsId")
                         .HasColumnType("INTEGER");
 
@@ -221,9 +221,6 @@ namespace APINetBorker.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("PercentageOfContractMargin")
-                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ProductType")
                         .HasColumnType("INTEGER");
@@ -263,13 +260,11 @@ namespace APINetBorker.Migrations
                             Id = 1,
                             Adder = 0.0075m,
                             AnnualUsage = 58398,
-                            ContractMargin = 0m,
                             ContractsId = 1,
                             EndDate = new DateTime(2025, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 4,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 0.01275m,
                             StartDate = new DateTime(2023, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -282,13 +277,11 @@ namespace APINetBorker.Migrations
                             Id = 2,
                             Adder = 0.073m,
                             AnnualUsage = 12303,
-                            ContractMargin = 0m,
                             ContractsId = 1,
                             EndDate = new DateTime(2024, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 1,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 2,
                             Rate = 0.2275m,
                             StartDate = new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -301,13 +294,11 @@ namespace APINetBorker.Migrations
                             Id = 3,
                             Adder = 6.3m,
                             AnnualUsage = 835,
-                            ContractMargin = 0m,
                             ContractsId = 1,
                             EndDate = new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 5,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 23m,
                             StartDate = new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -320,13 +311,11 @@ namespace APINetBorker.Migrations
                             Id = 4,
                             Adder = 0.0073m,
                             AnnualUsage = 160880,
-                            ContractMargin = 0m,
                             ContractsId = 1,
                             EndDate = new DateTime(2024, 8, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 4,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 0.02275m,
                             StartDate = new DateTime(2023, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -339,13 +328,11 @@ namespace APINetBorker.Migrations
                             Id = 5,
                             Adder = 0.083m,
                             AnnualUsage = 89340,
-                            ContractMargin = 0m,
                             ContractsId = 1,
                             EndDate = new DateTime(2024, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 2,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 2,
                             Rate = 0.3275m,
                             StartDate = new DateTime(2023, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -358,13 +345,11 @@ namespace APINetBorker.Migrations
                             Id = 6,
                             Adder = 0.003m,
                             AnnualUsage = 36000,
-                            ContractMargin = 0m,
                             ContractsId = 2,
                             EndDate = new DateTime(2024, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 4,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 0.0225m,
                             StartDate = new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -377,13 +362,11 @@ namespace APINetBorker.Migrations
                             Id = 7,
                             Adder = 0.073m,
                             AnnualUsage = 4200,
-                            ContractMargin = 0m,
                             ContractsId = 2,
                             EndDate = new DateTime(2024, 3, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 3,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 2,
                             Rate = 2.275m,
                             StartDate = new DateTime(2023, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -396,13 +379,11 @@ namespace APINetBorker.Migrations
                             Id = 8,
                             Adder = 5.32m,
                             AnnualUsage = 1500,
-                            ContractMargin = 0m,
                             ContractsId = 2,
                             EndDate = new DateTime(2024, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 5,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 20.75m,
                             StartDate = new DateTime(2023, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -415,13 +396,11 @@ namespace APINetBorker.Migrations
                             Id = 9,
                             Adder = 0.053m,
                             AnnualUsage = 60000,
-                            ContractMargin = 0m,
                             ContractsId = 2,
                             EndDate = new DateTime(2024, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 1,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 2,
                             Rate = 0.1275m,
                             StartDate = new DateTime(2023, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -434,13 +413,11 @@ namespace APINetBorker.Migrations
                             Id = 10,
                             Adder = 0.0033m,
                             AnnualUsage = 15000,
-                            ContractMargin = 0m,
                             ContractsId = 2,
                             EndDate = new DateTime(2024, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EnergyUnitType = 4,
                             ForecastState = 0,
                             IsActive = true,
-                            PercentageOfContractMargin = 0m,
                             ProductType = 1,
                             Rate = 0.04275m,
                             StartDate = new DateTime(2023, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -468,38 +445,6 @@ namespace APINetBorker.Migrations
                     b.HasIndex("ContractItemId");
 
                     b.ToTable("ContractItemAttchment");
-                });
-
-            modelBuilder.Entity("Core.Entities.Contract.ContractItemForecast", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Id");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ContractItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("ForecastDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ForecastMonth")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ForecastMonthOfYear")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ForecastYear")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContractItemId");
-
-                    b.ToTable("ContractItemForecast");
                 });
 
             modelBuilder.Entity("Core.Entities.Contract.Customer", b =>
@@ -691,6 +636,35 @@ namespace APINetBorker.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Commision");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CommissionConfigurationTypeId = "ContractUpfront",
+                            MarginPercent = 0.5m,
+                            ProgramAdder = 0.007m,
+                            ProgramAdderType = 1,
+                            SalesProgramId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CommissionConfigurationTypeId = "PercentageContractResidual",
+                            MarginPercent = 0.5m,
+                            ProgramAdder = 0.007m,
+                            ProgramAdderType = 1,
+                            SalesProgramId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CommissionConfigurationTypeId = "QuarterlyUpfront",
+                            MarginPercent = 0m,
+                            ProgramAdder = 0.007m,
+                            ProgramAdderType = 1,
+                            SalesProgramId = 2
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Sales.DateConfig", b =>
@@ -904,7 +878,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "DN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "668f6c1b-94cf-491e-aa9f-082c84ab4219",
+                            ConcurrencyStamp = "692b6851-f91b-4043-b768-78a9a138464c",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrDat",
@@ -919,7 +893,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HCM",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "413f8ad0-f98b-4bb8-869d-6f8cf1064e82",
+                            ConcurrencyStamp = "23f6fa61-c5d6-4c78-ac54-b07a12aca63b",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",
@@ -934,7 +908,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "6d8f9164-7dd7-474d-b753-69ff146e9224",
+                            ConcurrencyStamp = "4cbafd5f-db84-4bbd-b3a3-229635ca8c63",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrB",
@@ -949,7 +923,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "QN",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "dfc0d299-d62f-4d7a-99a9-333775665e17",
+                            ConcurrencyStamp = "ed073e41-9efd-4507-a0dd-42628c2d6620",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrC",
@@ -964,7 +938,7 @@ namespace APINetBorker.Migrations
                             AccessFailedCount = 0,
                             Address = "HT",
                             BirthDay = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "cfe02bad-554e-4b46-a467-c111dbaf605f",
+                            ConcurrencyStamp = "cfd7dec6-f7b9-4679-8616-ddeb05454fe3",
                             DateCreated = new DateTime(2023, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailConfirmed = false,
                             FullName = "MrD",
@@ -1079,17 +1053,6 @@ namespace APINetBorker.Migrations
                     b.HasBaseType("Core.Entities.Sales.Commision");
 
                     b.HasDiscriminator().HasValue("ContractUpfront");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CommissionConfigurationTypeId = "ContractUpfront",
-                            MarginPercent = 0.5m,
-                            ProgramAdder = 0.007m,
-                            ProgramAdderType = 1,
-                            SalesProgramId = 1
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Sales.PercentageContractResidual", b =>
@@ -1097,17 +1060,6 @@ namespace APINetBorker.Migrations
                     b.HasBaseType("Core.Entities.Sales.Commision");
 
                     b.HasDiscriminator().HasValue("PercentageContractResidual");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            CommissionConfigurationTypeId = "PercentageContractResidual",
-                            MarginPercent = 0.5m,
-                            ProgramAdder = 0.007m,
-                            ProgramAdderType = 1,
-                            SalesProgramId = 1
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Sales.QuarterlyUpfront", b =>
@@ -1115,17 +1067,6 @@ namespace APINetBorker.Migrations
                     b.HasBaseType("Core.Entities.Sales.Commision");
 
                     b.HasDiscriminator().HasValue("QuarterlyUpfront");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            CommissionConfigurationTypeId = "QuarterlyUpfront",
-                            MarginPercent = 0.5m,
-                            ProgramAdder = 0.007m,
-                            ProgramAdderType = 1,
-                            SalesProgramId = 1
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Sales.QualificationAnnualUsage", b =>
@@ -1139,15 +1080,6 @@ namespace APINetBorker.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("QualificationAnnualUsage");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            SalesProgramId = 2,
-                            FromAnnualUsage = 50000,
-                            ToAnnualUsage = 100000
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Sales.QualificationDate", b =>
@@ -1161,22 +1093,6 @@ namespace APINetBorker.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("QualificationDate");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            SalesProgramId = 1,
-                            EffectiveDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExpiryDate = new DateTime(2199, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            SalesProgramId = 2,
-                            EffectiveDate = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ExpiryDate = new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Contract.Contract", b =>
@@ -1236,17 +1152,6 @@ namespace APINetBorker.Migrations
                 {
                     b.HasOne("Core.Entities.Contract.ContractItem", "ContractItem")
                         .WithMany("Attachments")
-                        .HasForeignKey("ContractItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContractItem");
-                });
-
-            modelBuilder.Entity("Core.Entities.Contract.ContractItemForecast", b =>
-                {
-                    b.HasOne("Core.Entities.Contract.ContractItem", "ContractItem")
-                        .WithMany("ContractItemForecasts")
                         .HasForeignKey("ContractItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1355,8 +1260,6 @@ namespace APINetBorker.Migrations
             modelBuilder.Entity("Core.Entities.Contract.ContractItem", b =>
                 {
                     b.Navigation("Attachments");
-
-                    b.Navigation("ContractItemForecasts");
                 });
 
             modelBuilder.Entity("Core.Entities.Contract.Customer", b =>

@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Sales
 {
-    public class Qualification
+    public abstract class Qualification
     {
+        public Qualification() { }
         [Column("Id")]
         public int? Id { get; set; }
 
         //FK SalesProgram
-        public int? SalesProgramId { get; private set; }
+        public int? SalesProgramId { get; set; }
         public SalesProgram? SalesProgram { get; private set; }
 
         public virtual bool QualificationVerifity(ContractItem contractItem)
@@ -20,6 +21,14 @@ namespace Core.Entities.Sales
     }
     public class QualificationDate : Qualification
     {
+        public QualificationDate() { }
+        public QualificationDate(DateTime? effectiveDate, DateTime? expiryDate, int? saleprogramId)
+        {
+            EffectiveDate = effectiveDate;
+            ExpiryDate = expiryDate;
+            SalesProgramId = saleprogramId;
+        }
+
         public DateTime? EffectiveDate { get; private set; }
         public DateTime? ExpiryDate { get; private set; }
 
@@ -30,6 +39,14 @@ namespace Core.Entities.Sales
     }
     public class QualificationAnnualUsage : Qualification
     {
+        public QualificationAnnualUsage() { }
+        public QualificationAnnualUsage(int? fromAnnualUsage, int? toAnnualUsage, int? saleprogramId)
+        {
+            FromAnnualUsage = fromAnnualUsage;
+            ToAnnualUsage = toAnnualUsage;
+            SalesProgramId = saleprogramId;
+        }
+
         public int? FromAnnualUsage { get; private set; }
         public int? ToAnnualUsage { get; private set; }
         public override bool QualificationVerifity(ContractItem contractItem)
@@ -37,6 +54,4 @@ namespace Core.Entities.Sales
             return FromAnnualUsage <= contractItem.AnnualUsage && ToAnnualUsage >= contractItem.AnnualUsage;
         }
     }
-
-
 }

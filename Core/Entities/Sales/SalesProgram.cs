@@ -1,4 +1,5 @@
-﻿using Core.Entities.Enum;
+﻿using Core.Entities.Contract;
+using Core.Entities.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Sales
@@ -7,6 +8,13 @@ namespace Core.Entities.Sales
     {
         public SalesProgram(EnergyUnitType energyUnitType, string? description, string? salesProgramType)
         {
+            EnergyUnitType = energyUnitType;
+            Description = description;
+            SalesProgramType = salesProgramType;
+        } 
+        public SalesProgram(ICollection<Commision> commision,EnergyUnitType energyUnitType, string? description, string? salesProgramType)
+        {
+            Commisions = commision;
             EnergyUnitType = energyUnitType;
             Description = description;
             SalesProgramType = salesProgramType;

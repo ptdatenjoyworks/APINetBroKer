@@ -1,11 +1,15 @@
 ﻿using Core.Entities.Contract;
 using Core.Entities.Enum;
 using Core.Entities.Sales;
+using Core.Services.Contracts;
+using NUnit.Framework.Internal;
+using System.Reflection.Metadata.Ecma335;
 
 namespace UnitTest
 {
     public class ContractItemUnitTest
     {
+
         [SetUp]
         public void Setup()
         {
@@ -59,7 +63,7 @@ namespace UnitTest
         [TestCase(ControlDateType.CustomerPaymentDate, "2023-12-05", "2023-12-05", "2024-2-05")]
         [TestCase(ControlDateType.SupplierInvoiceDate, "2023-12-04", "2023-12-05", "2023-12-12")]
         [TestCase(ControlDateType.UtilityAcceptanceDate, "2023-12-04", "2023-12-05", "2023-11-04")]
-        public void ControlDateTest(ControlDateType type, string startdate,string soldDate, string result)
+        public void ControlDateTest(ControlDateType type, string startdate, string soldDate, string result)
         {
             var dateConfig = new DateConfig(1, type, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
             var contract = new Contract("John A", 1, 1, 1, 1, 1, DateTime.Parse(soldDate), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
@@ -69,17 +73,124 @@ namespace UnitTest
             Assert.AreEqual(DateTime.Parse(result), date);
         }
         [Test]
-        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-04",2 ,"2023-12-22")]
-        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays, "2023-12-11", 2,"2023-12-08")]
-        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-09", 2,"2023-12-22")]
-        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays , "2023-12-11", 32,"2024-01-05")]
-        public void ControlDateOffsetTest(ControlDateOffsetType type,string startdate, int offset, string result)
+        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-04", 2, "2023-12-22")]
+        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays, "2023-12-11", 2, "2023-12-08")]
+        [TestCase(ControlDateOffsetType.DayOfWeek_Fridays, "2023-12-09", 2, "2023-12-22")]
+        [TestCase(ControlDateOffsetType.FirstDayAfterOffSet_Fridays, "2023-12-11", 32, "2024-01-05")]
+        public void ControlDateOffsetTest(ControlDateOffsetType type, string startdate, int offset, string result)
         {
             var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, type, offset);
 
             var date = dateConfig.ControlDateOffset(DateTime.Parse(startdate));
 
             Assert.AreEqual(DateTime.Parse(result), date);
+        }
+
+
+
+        [Test]
+        public void ForecastContractItemContractUpfront()
+        {
+            var commision = new ContractUpfront(1, "ContractUpfront", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+            Assert.AreEqual(1, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(437.99m, firstForecast.Amount);
+            Assert.AreEqual(new DateTime(2023, 03, 31), firstForecast.ForecastDate);
+        }
+
+        [Test]
+        public void ForecastContractItemQuarterlyUpfront()
+        {
+            var commision = new QuarterlyUpfront(1, "QuarterlyUpfront", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+            Assert.AreEqual(8, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(109.50m, firstForecast.Amount);
+            Assert.AreEqual(new DateTime(2023, 03, 31), firstForecast.ForecastDate);
+            for (int i = 0; i < forecasts.Count - 1; i++)
+            {
+                Assert.IsTrue((forecasts[i + 1].ForecastDate == forecasts[i].ForecastDate.Date.AddMonths(3)));
+
+            }
+            Assert.AreEqual(109.47, forecasts.LastOrDefault().Amount);
+
+        }
+        [Test]
+        public void ForecastContractItemPercentageContractResidual()
+        {
+            var commision = new PercentageContractResidual(1, "PercentageContractResidual", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var listContractItemforecast = new List<ContractItemForecast>()
+            {
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 03, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 04, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 05, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 06, 25))
+            };
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(listContractItemforecast, contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+
+            Assert.AreEqual(20, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(36, firstForecast.Amount);
+            Assert.AreEqual(new DateTime(2023, 07, 25), firstForecast.ForecastDate);
+            for (int i = 0; i < forecasts.Count - 1; i++)
+            {
+                Assert.IsTrue((forecasts[i + 1].ForecastDate == forecasts[i].ForecastDate.Date.AddMonths(1)));
+
+            }
+            Assert.AreEqual(-246.02, forecasts.LastOrDefault().Amount);
+
+        }
+        [Test]
+        public void ForecastContractItemTotal()
+        {
+            var commision1 = new ContractUpfront(1, "ContractUpfront", ProgramAdderType.Override, 0.007m, 0.5m);
+            var commision2 = new QuarterlyUpfront(1, "QuarterlyUpfront", ProgramAdderType.Override, 0.007m, 0.5m);
+            var commision = new PercentageContractResidual(1, "PercentageContractResidual", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            commision1.SetDateConfig(dateConfig);
+            commision2.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var listCommision = new List<Commision>();
+            listCommision.Add(commision1);
+            listCommision.Add(commision);
+            listCommision.Add(commision2);
+
+            var saleprogram = new SalesProgram(listCommision, EnergyUnitType.CCF, "", "");
+            var listContractItemforecast = new List<ContractItemForecast>()
+            {
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 03, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 04, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 05, 25)),
+                new ContractItemForecast(1,109.50m,new DateTime(2023, 06, 25))
+            };
+            var contractItem = new ContractItem(saleprogram, listContractItemforecast, contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var listforecast = new List<ContractItemForecast>();
+            foreach (var item in contractItem.SalesProgram.Commisions)
+            {
+                var forecast = item.GetListContractItemForecast(contractItem);
+                forecast.ForEach(p => contractItem.ContractItemForecasts.Add(p));
+            }
+
+            Assert.AreEqual(32, contractItem.ContractItemForecasts.Count);
+
         }
     }
 }

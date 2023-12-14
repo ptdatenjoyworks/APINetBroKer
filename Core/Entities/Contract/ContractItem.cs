@@ -2,7 +2,6 @@
 using Core.Entities.Enum;
 using Core.Entities.Sales;
 using Core.Extensions;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Contract
@@ -26,6 +25,7 @@ namespace Core.Entities.Contract
             {
                 throw new ArgumentException($"ProductType : {ProductType}  khong phu hop voi Energy : {energyUnitType}");
             }
+            Status = Status.Submitted;
 
         }
         public ContractItem(Contract contract, string? utilityAccountNumber, DateTime startDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType, int? annualUsage, decimal? rate, decimal? adder)
@@ -47,6 +47,48 @@ namespace Core.Entities.Contract
             }
 
         }
+        public ContractItem(ICollection<ContractItemForecast> contractItemForecasts, Contract contract, string? utilityAccountNumber, DateTime startDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType, int? annualUsage, decimal? rate, decimal? adder)
+        {
+            ContractItemForecasts = contractItemForecasts;
+            Contracts = contract;
+            UtilityAccountNumber = utilityAccountNumber;
+            StartDate = startDate;
+            EndDate = StartDate.AddMonths(termMonth);
+            TermMonth = termMonth;
+            ProductType = productType;
+            EnergyUnitType = energyUnitType;
+            AnnualUsage = annualUsage;
+            Rate = rate;
+            Adder = adder;
+            var energyProductType = energyUnitType.GetTypeProduct();
+            if (energyProductType != ProductType)
+            {
+                throw new ArgumentException($"ProductType : {ProductType}  khong phu hop voi Energy : {energyUnitType}");
+            }
+
+        }
+        public ContractItem(SalesProgram salesProgram,ICollection<ContractItemForecast> contractItemForecasts, Contract contract, string? utilityAccountNumber, DateTime startDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType, int? annualUsage, decimal? rate, decimal? adder)
+        {
+            SalesProgram = salesProgram;
+            ContractItemForecasts = contractItemForecasts;
+            Contracts = contract;
+            UtilityAccountNumber = utilityAccountNumber;
+            StartDate = startDate;
+            EndDate = StartDate.AddMonths(termMonth);
+            TermMonth = termMonth;
+            ProductType = productType;
+            EnergyUnitType = energyUnitType;
+            AnnualUsage = annualUsage;
+            Rate = rate;
+            Adder = adder;
+            var energyProductType = energyUnitType.GetTypeProduct();
+            if (energyProductType != ProductType)
+            {
+                throw new ArgumentException($"ProductType : {ProductType}  khong phu hop voi Energy : {energyUnitType}");
+            }
+
+        } 
+       
 
         private ContractItem()
         {
@@ -77,6 +119,9 @@ namespace Core.Entities.Contract
 
         public Status Status { get; private set; }
         public ForecastState ForecastState { get; set; }
+        public decimal ContractMargin { get; private set; }
+        public decimal PercentageOfContractMargin { get; private set; }
+        public ICollection<ContractItemForecast> ContractItemForecasts { get; set; } = new List<ContractItemForecast>();
 
         public void Update(int? contractId, DateTime startDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType)
         {
@@ -94,37 +139,65 @@ namespace Core.Entities.Contract
                 ForecastState = ForecastState.InvalidSalesData;
                 return false;
             }
-            else if(Status == Status.Rejected)
+            else if (Status == Status.Rejected)
             {
                 ForecastState = ForecastState.RejectedDeal;
                 return false;
             }
-            else if(!ContractsId.HasValue)
+            else if (!ContractsId.HasValue)
             {
                 ForecastState = ForecastState.InvalidSalesData;
                 return false;
             }
-            else if(!Contracts.SupplierId.HasValue || !SaleProgramId.HasValue)
+            else if (!Contracts.SupplierId.HasValue || !salesPrograms.Any())
             {
                 ForecastState = ForecastState.MissingSalesProgram;
                 return false;
             }
             var validSalePrograms = salesPrograms.Where(x => x.Qualifications.Any(a => a.QualificationVerifity(this)));
-            if (!validSalePrograms.Any()) 
+            if (!validSalePrograms.Any())
             {
                 ForecastState = ForecastState.MissingSalesProgram;
                 return false;
             }
             else
             {
-                SaleProgramId = validSalePrograms.OrderByDescending(x=>x.Qualifications.Count(x=>x.QualificationVerifity(this)))
-                    .ThenBy(x=>x.Qualifications.OfType<QualificationDate>()
-                    .Max(p=>p.EffectiveDate)).FirstOrDefault()?.Id;
+                SalesProgram = validSalePrograms.OrderByDescending(x => x.Qualifications.Count(x => x.QualificationVerifity(this)))
+                    .ThenBy(x => x.Qualifications.OfType<QualificationDate>()
+                    .Max(p => p.EffectiveDate)).FirstOrDefault();
             }
 
-
+            if (SalesProgram.Commisions.Any(x => !x.Validate()))
+            {
+                ForecastState = ForecastState.InvalidSalesData;
+            }
+            else
+            {
+                ForecastState = ForecastState.Reforecast;
+            }
             return false;
         }
 
+        public bool Forecast(List<SalesProgram> salesPrograms)
+        {
+            if (ForecastState == ForecastState.Complete)
+            {
+                ContractItemForecasts.Clear();
+            }
+            if (ForecastState != ForecastState.Reforecast)
+            {
+                return false;
+            }
+            if (salesPrograms == null || SalesProgram.Commisions != null)
+            {
+                return false;
+            }
+            foreach (var item in SalesProgram.Commisions)
+            {
+                 var forcastitems    = item.GetListContractItemForecast(this);
+                forcastitems.ForEach(p => ContractItemForecasts.Add(p));
+            }
+            return true;
+        }
     }
 }

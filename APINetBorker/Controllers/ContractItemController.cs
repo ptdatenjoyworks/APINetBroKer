@@ -44,6 +44,7 @@ namespace APINetBorker.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var a = await contractItemService.VerifityContract(1);
             var result = await contractItemService.Delete(id);
 
             return CreateSuccessResult(result);
