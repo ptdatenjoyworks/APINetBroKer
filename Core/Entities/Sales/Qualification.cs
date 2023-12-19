@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Contract;
+using Core.Entities.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Sales
@@ -52,6 +53,51 @@ namespace Core.Entities.Sales
         public override bool QualificationVerifity(ContractItem contractItem)
         {
             return FromAnnualUsage <= contractItem.AnnualUsage && ToAnnualUsage >= contractItem.AnnualUsage;
+        }
+    }
+
+    public class QualificationDaysToStart : Qualification
+    {
+        public QualificationDaysToStart() { }
+        public int DayToStart { get; private set; }
+        public bool MoreThanXDays { get;private set; }  
+
+        public override bool QualificationVerifity(ContractItem contractItem)
+        {
+            if (MoreThanXDays)
+            {
+                return (contractItem.Contracts.SoldDate?.Day - contractItem.Contracts.StartDate?.Day) > DayToStart;
+            }
+            else
+            {
+                return (contractItem.Contracts.SoldDate?.Day - contractItem.Contracts.StartDate?.Day) <= DayToStart;
+            }
+        }
+    }
+    public class QualificationLengthOfTerm : Qualification
+    {
+        public QualificationLengthOfTerm() { }
+
+        public int MinTermMonth { get; private set; }
+        public int MaxTermMonth { get;private set; }
+       
+        public override bool QualificationVerifity(ContractItem contractItem)
+        {
+            return MinTermMonth <= contractItem.TermMonth && MaxTermMonth >= contractItem.TermMonth;    
+        }
+    }
+
+    public class QualificationProductType : Qualification 
+    {
+        public QualificationProductType() { }
+
+        public bool IsIncludedProductType { get; private set; }
+
+        public ProductType ProductType { get; private set; }
+
+        public override bool QualificationVerifity(ContractItem contractItem)
+        {
+            return (IsIncludedProductType && contractItem.ProductType == ProductType) || (!IsIncludedProductType && contractItem.ProductType != ProductType);
         }
     }
 }

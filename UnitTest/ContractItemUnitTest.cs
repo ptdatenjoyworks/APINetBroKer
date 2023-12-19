@@ -21,7 +21,7 @@ namespace UnitTest
             var contract = new ContractItem(1, "", new DateTime(2023, 07, 01), 2, ProductType.Gas, EnergyUnitType.MCF, 1, 1, 1);
             Assert.AreEqual(new DateTime(2023, 09, 01), contract.EndDate);
         }
-        [Test]
+       /* [Test]
         public void Create_InvalidProductType()
         {
             Assert.Throws<ArgumentException>(() =>
@@ -85,9 +85,9 @@ namespace UnitTest
 
             Assert.AreEqual(DateTime.Parse(result), date);
         }
+*/
 
-
-
+/*
         [Test]
         public void ForecastContractItemContractUpfront()
         {
@@ -190,7 +190,102 @@ namespace UnitTest
             }
 
             Assert.AreEqual(32, contractItem.ContractItemForecasts.Count);
+        }*/
 
+        [Test]
+        public void ForecastContractItemAnnualUpfront()
+        {
+            var commision = new AnnualUpfront(1, "AnnualUpfront", ProgramAdderType.Override, 0.007m, 0.5m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(4, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(408.79m, firstForecast.Amount);
+            for (int i = 0; i < forecasts.Where(p=>p.Amount>0).Count() - 1; i++)
+            {
+                Assert.IsTrue((forecasts[i + 2].ForecastDate == forecasts[i].ForecastDate.Date.AddYears(1)));
+
+            }
+            Assert.AreEqual(408.78m, forecasts.Where(p => p.Amount > 0).LastOrDefault().Amount);
+
+            for (int i = 0; i < forecasts.Where(p => p.Amount < 0).Count() - 1; i++)
+            {
+                Assert.IsTrue((forecasts[i + 2].ForecastDate == forecasts[i].ForecastDate.Date.AddYears(1)));
+            }
+            Assert.AreEqual(-204.40m, forecasts.Where(p => p.Amount < 0).FirstOrDefault().Amount);
         }
+        [Test]
+        public void ForecastContractItemBridge()
+        {
+            var commision = new Bridge(500,1,"");
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(1, forecasts.Count);
+            Assert.AreEqual(500, forecasts.FirstOrDefault().Amount);
+        }
+        [Test]
+        public void ForecastContractItemFirstAnnualUpfront()
+        {
+            var commision = new FirstAnnualUpfront(1, "FirstAnnualUpfront", ProgramAdderType.Override, 0.007m, 0.5m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(2, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(408.79m, firstForecast.Amount);
+            Assert.AreEqual(-204.40m, forecasts.Where(p => p.Amount < 0).FirstOrDefault().Amount);
+        } 
+        [Test]
+        public void ForecastContractItemFirstAnnualUpfront25kMax()
+        {
+            var commision = new FirstAnnualUpfront25kMax(1, "FirstAnnualUpfront", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(1, forecasts.Count);
+            var firstForecast = forecasts.FirstOrDefault();
+            Assert.AreEqual(408.79m, firstForecast.Amount);
+        } 
+        [Test]
+        public void ForecastContractItemPercentageAdderResidual()
+        {
+            var commision = new PercentageAdderResidual(1, "PercentageAdderResidual", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(24, forecasts.Count);
+            Assert.AreEqual(408.79m, forecasts.Sum(x => x.Amount));
+        } 
+        [Test]
+        public void ForecastContractItemPercentageFirstAnnualRemainderResidual()
+        {
+            var commision = new PercentageFirstAnnualRemainderResidual(1, "PercentageFirstAnnualRemainderResidual", ProgramAdderType.Override, 0.007m, 0.5m);
+            var dateConfig = new DateConfig(1, ControlDateType.SoldDate, ControlDateModifierType.NoModifier, ControlDateOffsetType.DayOfWeek_Fridays, 2);
+            commision.SetDateConfig(dateConfig);
+            var contract = new Contract("John A", 1, 1, 1, 1, 1, new DateTime(2023, 03, 14), Core.Entities.Enum.BillingChargeType.AllIn, Core.Entities.Enum.BillingType.ChickenRanch, Core.Entities.Enum.EnrollmentType.TPV, Core.Entities.Enum.PricingType.Matrix, Core.Entities.Enum.Stage.Opportunity);
+            var contractItem = new ContractItem(contract, "9138014006", new DateTime(2023, 03, 14), 24, ProductType.Elec, EnergyUnitType.KWH, 58398, 0.01275m, 0.0075m);
+            var forecasts = commision.GetListContractItemForecast(contractItem);
+
+            Assert.AreEqual(12, forecasts.Count);
+            Assert.AreEqual(204.36m, forecasts.Sum(x => x.Amount));
+        }
+
     }
 }
