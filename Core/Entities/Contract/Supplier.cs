@@ -6,8 +6,15 @@ namespace Core.Entities.Contract
 {
     public class Supplier : BaseClass
     {
+        public Supplier() { }
         public Supplier(string? name)
         {
+            Name = name;
+        }
+
+        public Supplier(int? id, string name)
+        {
+            Id = id;
             Name = name;
         }
 

@@ -29,6 +29,13 @@ namespace Core.Entities.Contract
             Stage = stage;
         }
 
+        public Contract(int id,int? supplierId,Supplier? supplier)
+        {
+            Id = id;
+            SupplierId = supplierId;
+            supplier = Supplier;
+        }
+
         [Column("Id")]
         public int Id { get; init; }
         public string? LegalEntityName { get; private set; }

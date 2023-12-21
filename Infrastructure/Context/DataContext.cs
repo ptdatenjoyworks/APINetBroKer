@@ -45,7 +45,6 @@ namespace Infrastructure.Context
             modelBuilder.ApplyConfiguration(new ContractUpfrontConfiguration());
             modelBuilder.ApplyConfiguration(new PercentageContractResidualConfiguration());
             modelBuilder.ApplyConfiguration(new QuarterlyUpfrontConfiguration());
-
         }
 
         public DbSet<Supplier> Suppliers { get; set; }
@@ -58,5 +57,6 @@ namespace Infrastructure.Context
         public DbSet<Commision> Commisions { get; set; }
         public DbSet<DateConfig> DateConfigs { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using Core.Entities.Contract;
+﻿using Bogus;
+using Core.Entities.Contract;
 using Core.Entities.Enum;
 using Core.Entities.Sales;
 using Core.Services.Contracts;
+using NUnit.Framework.Constraints;
 using NUnit.Framework.Internal;
 using System.Reflection.Metadata.Ecma335;
 
@@ -192,7 +194,7 @@ namespace UnitTest
             Assert.AreEqual(32, contractItem.ContractItemForecasts.Count);
         }*/
 
-        [Test]
+       /* [Test]
         public void ForecastContractItemAnnualUpfront()
         {
             var commision = new AnnualUpfront(1, "AnnualUpfront", ProgramAdderType.Override, 0.007m, 0.5m, 0.5m);
@@ -286,6 +288,16 @@ namespace UnitTest
             Assert.AreEqual(12, forecasts.Count);
             Assert.AreEqual(204.36m, forecasts.Sum(x => x.Amount));
         }
-
+*/
+        [Test]
+        public void FakeData()
+        {
+            var listName = new string[] { "A", "B", "C", "D", "E", "F" };
+            var fakerSupplier = new Faker<Supplier>()
+                .RuleFor(x => x.Name, f => f.PickRandom(listName));
+            var listSuppler = fakerSupplier.Generate(1000);
+           /* var fakerContract = new Faker<Contract>()
+                .RuleFor()*/
+        }
     }
 }

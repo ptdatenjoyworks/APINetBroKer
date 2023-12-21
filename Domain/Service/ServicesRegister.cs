@@ -18,6 +18,7 @@ namespace Domain.Service
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IContractItemService, ContractItemService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IReportService, ReportService>();
         }
     }
 }

@@ -90,9 +90,29 @@ namespace Core.Entities.Contract
         } 
        
 
-        private ContractItem()
+        public ContractItem()
         {
 
+        }
+
+        public ContractItem(int id, int? contractsId, Contract contracts, string utilityAccountNumber, DateTime startDate, DateTime endDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType, int? annualUsage, decimal? rate, decimal? adder, Status status, ForecastState forecastState, decimal contractMargin, decimal percentageOfContractMargin)
+        {
+            Id = id;
+            ContractsId = contractsId;
+            Contracts = contracts;
+            UtilityAccountNumber = utilityAccountNumber;
+            StartDate = startDate;
+            EndDate = endDate;
+            TermMonth = termMonth;
+            ProductType = productType;
+            EnergyUnitType = energyUnitType;
+            AnnualUsage = annualUsage;
+            Rate = rate;
+            Adder = adder;
+            Status = status;
+            ForecastState = forecastState;
+            ContractMargin = contractMargin;
+            PercentageOfContractMargin = percentageOfContractMargin;
         }
 
         [Column("Id")]

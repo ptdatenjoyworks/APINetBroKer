@@ -24,7 +24,7 @@ namespace APINetBorker
         {
             this.configuration = configuration;
         }
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container.
             LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -32,6 +32,7 @@ namespace APINetBorker
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.AddDbContext<DataContext>(opts => opts.UseSqlite(configuration.GetConnectionString("WebApiDatabase")));
+
 
             //Config Repositories
             services.UseRepositories();
@@ -64,6 +65,7 @@ namespace APINetBorker
             {
                 options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
             });
+            await services.InitData();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
