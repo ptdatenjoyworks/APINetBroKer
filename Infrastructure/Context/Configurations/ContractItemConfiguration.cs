@@ -6,7 +6,7 @@ using Core.Entities.Enum;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class ContractItemConfiguration : IEntityTypeConfiguration<ContractItem>
+    public class ContractItemConfiguration : IEntityTypeConfiguration<ContractItem>
     {
         public void Configure(EntityTypeBuilder<ContractItem> builder)
         {

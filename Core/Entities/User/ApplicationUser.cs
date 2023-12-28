@@ -31,7 +31,18 @@ namespace Core.Entities.User
             FullName = fullName;
             IsActive = isActive;
             DateCreated = dateCreated;
+        } 
+        public ApplicationUser(string? address, DateTime? birthDay, string? fullName, bool isActive, string userName, string password, string permission)
+        {
+            Address = address;
+            BirthDay = birthDay;
+            FullName = fullName;
+            IsActive = isActive;
+            UserName = userName;
+            Password = password;
+            Permission = permission;
         }
+
 
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
         public string? Address { get; private set; }
@@ -40,6 +51,9 @@ namespace Core.Entities.User
         [Required(ErrorMessage = "Full name is required")]
         [MaxLength(255, ErrorMessage = "Maximum length for the full name is 255 characters")]
         public string? FullName { get; set; }
+
+        public string Password { get;set; }
+        public string Permission { get;set; }
 
         public bool IsActive { get; private set; } = true;
         public DateTime DateCreated { get; private set; } = DateTime.Now;

@@ -1,4 +1,5 @@
-﻿using Core.Models.Requests.User;
+﻿using Core.Entities.User;
+using Core.Models.Requests.User;
 using Core.Models.Response.User;
 
 namespace Core.Services.Users
@@ -7,5 +8,6 @@ namespace Core.Services.Users
     {
         Task<UserResponse?> GetByUserName(string? userName);
         Task<UserResponse?> GetById(int id);
+        Task<ApplicationUser> GetUserLogin(string username, string password);
     }
 }

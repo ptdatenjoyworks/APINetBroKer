@@ -50,7 +50,7 @@ namespace Core.Entities.Contract
         public int? FronterId { get; private set; }
         public ApplicationUser? Fronter { get; private set; }
         public int? SupplierId { get; private set; }  
-        public Supplier? Supplier { get; private set; } 
+        public Supplier? Supplier { get;  set; } 
         public ICollection<ContractItem>? ContractItems { get; private set; }
 
         public DateTime? SoldDate { get; private set; }

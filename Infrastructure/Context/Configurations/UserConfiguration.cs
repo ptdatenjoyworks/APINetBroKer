@@ -16,7 +16,9 @@ namespace Infrastructure.Context.Configurations
                 new ApplicationUser("HCM",new DateTime(2023,10,26),"MrD",true, new DateTime(2023, 10, 26)) { Id = 2},
                 new ApplicationUser("HN",new DateTime(2023,10,26),"MrB",true, new DateTime(2023, 10, 26)) { Id = 3 },
                 new ApplicationUser("QN",new DateTime(2023,10,26),"MrC",true, new DateTime(2023, 10, 26)) { Id = 4 },
-                new ApplicationUser("HT",new DateTime(2023,10,26),"MrD",true, new DateTime(2023, 10, 26)) { Id = 5 }
+                new ApplicationUser("HT",new DateTime(2023,10,26),"MrD",true, new DateTime(2023, 10, 26)) { Id = 5 },
+                new ApplicationUser("HT",new DateTime(2023,10,26),"MrD",true, "Dat","dat123", "admin") { Id = 6 },
+                new ApplicationUser("HT",new DateTime(2023,10,26),"MrD",true, "VN","vn123", "contract:all") { Id = 7 }
                 );
         }
     }

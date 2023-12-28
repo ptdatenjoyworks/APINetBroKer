@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
+    public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
     {
         public void Configure(EntityTypeBuilder<Supplier> builder)
         {

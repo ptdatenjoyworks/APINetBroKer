@@ -12,7 +12,7 @@ using System.Net.WebSockets;
 namespace APINetBorker.Controllers
 {
     [Route("api/users")]
-    [AllowAnonymous]
+    [Authorize]
     public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;

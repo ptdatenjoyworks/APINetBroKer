@@ -6,6 +6,7 @@ using Core.Models.Response.User;
 using Core.Repositories.User;
 using Core.Services.Users;
 using Microsoft.AspNetCore.Identity;
+using System.Security;
 
 namespace Domain.Service.User
 {
@@ -88,6 +89,15 @@ namespace Domain.Service.User
         public Task Update(UserResponse entity)
         {
             throw new NotImplementedException();
+        }
+        public async Task<ApplicationUser> GetUserLogin(string username, string password)
+        {
+            var validUser = await userRepository.FindByConditionAsync(x => x.UserName == username && x.Password == password);
+            if (validUser.FirstOrDefault() != null)
+            {
+                return validUser.FirstOrDefault();
+            }
+            return null;
         }
     }
 }

@@ -6,7 +6,7 @@ using Core.Entities.Enum;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class CommisionConfiguration : IEntityTypeConfiguration<Commision>
+    public class CommisionConfiguration : IEntityTypeConfiguration<Commision>
     {
         public void Configure(EntityTypeBuilder<Commision> builder)
         {
@@ -20,7 +20,7 @@ namespace Infrastructure.Context.Configurations
                .HasValue<QuarterlyUpfront>("QuarterlyUpfront");
         }
     }
-    internal class ContractUpfrontConfiguration : IEntityTypeConfiguration<ContractUpfront>
+    public class ContractUpfrontConfiguration : IEntityTypeConfiguration<ContractUpfront>
     {
         public void Configure(EntityTypeBuilder<ContractUpfront> builder)
         {
@@ -30,7 +30,7 @@ namespace Infrastructure.Context.Configurations
                 );
         }
     }
-    internal class PercentageContractResidualConfiguration : IEntityTypeConfiguration<PercentageContractResidual>
+    public class PercentageContractResidualConfiguration : IEntityTypeConfiguration<PercentageContractResidual>
     {
         public void Configure(EntityTypeBuilder<PercentageContractResidual> builder)
         {
@@ -40,7 +40,7 @@ namespace Infrastructure.Context.Configurations
                 );
         }
     }
-    internal class QuarterlyUpfrontConfiguration : IEntityTypeConfiguration<QuarterlyUpfront>
+    public class QuarterlyUpfrontConfiguration : IEntityTypeConfiguration<QuarterlyUpfront>
     {
         public void Configure(EntityTypeBuilder<QuarterlyUpfront> builder)
         {

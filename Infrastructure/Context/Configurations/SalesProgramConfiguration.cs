@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class SalesProgramConfiguration : IEntityTypeConfiguration<SalesProgram>
+    public class SalesProgramConfiguration : IEntityTypeConfiguration<SalesProgram>
     {
         public void Configure(EntityTypeBuilder<SalesProgram> builder)
         {

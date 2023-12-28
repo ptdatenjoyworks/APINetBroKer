@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class ContractConfiguration : IEntityTypeConfiguration<Contract>
+    public class ContractConfiguration : IEntityTypeConfiguration<Contract>
     {
         public void Configure(EntityTypeBuilder<Contract> builder)
         {

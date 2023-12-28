@@ -6,7 +6,6 @@ using Infrastructure.Context.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Diagnostics.Contracts;
 
 namespace Infrastructure.Context
 {
@@ -17,12 +16,6 @@ namespace Infrastructure.Context
         public DataContext(IConfiguration configuration, DbContextOptions<DataContext> options) : base(options)
         {
             Configuration = configuration;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            // connect to sqlite database
-            options.UseSqlite(Configuration.GetConnectionString("WebApiDatabase"), b => b.MigrationsAssembly("APINetBorker"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

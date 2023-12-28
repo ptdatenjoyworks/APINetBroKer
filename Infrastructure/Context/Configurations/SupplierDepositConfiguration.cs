@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class SupplierDepositConfiguration : IEntityTypeConfiguration<SupplierDeposit>
+    public class SupplierDepositConfiguration : IEntityTypeConfiguration<SupplierDeposit>
     {
         public void Configure(EntityTypeBuilder<SupplierDeposit> builder)
         {

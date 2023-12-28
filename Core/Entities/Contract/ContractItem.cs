@@ -94,6 +94,19 @@ namespace Core.Entities.Contract
         {
 
         }
+        public ContractItem(int? annualUsage, decimal contractMargin)
+        {
+            AnnualUsage = annualUsage;
+            ContractMargin = contractMargin;
+        }
+        public ContractItem(DateTime startDate,int? annualUsage, decimal contractMargin, Contract contract,Supplier supplier)
+        {
+            StartDate = startDate;
+            AnnualUsage = annualUsage;
+            ContractMargin = contractMargin;
+            Contracts = contract;
+            Contracts.Supplier = supplier;
+        }
 
         public ContractItem(int id, int? contractsId, Contract contracts, string utilityAccountNumber, DateTime startDate, DateTime endDate, int termMonth, ProductType? productType, EnergyUnitType? energyUnitType, int? annualUsage, decimal? rate, decimal? adder, Status status, ForecastState forecastState, decimal contractMargin, decimal percentageOfContractMargin)
         {
@@ -220,4 +233,5 @@ namespace Core.Entities.Contract
             return true;
         }
     }
+
 }

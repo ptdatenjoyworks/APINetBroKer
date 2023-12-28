@@ -1,18 +1,20 @@
 ﻿using APINetBorker.Controllers;
 using APINetBorker.Extensions;
-using APINetBorker.Migrations;
 using Core.Models.Profiles;
-using Core.Services;
+using Core.Settings;
 using Domain.Service;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
+using OpenIddict.Validation.AspNetCore;
+using System.Security.Claims;
 
 namespace APINetBorker
 {
@@ -51,7 +53,6 @@ namespace APINetBorker
             services.AddControllers().AddApplicationPart(typeof(ApiControllerBase).Assembly);
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
             services.ConfigureIdentity();
 
             services.ConfigureJWT(configuration);
@@ -65,8 +66,37 @@ namespace APINetBorker
             {
                 options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
             });
-            await services.InitData();
+
+
+            // Register the OpenIddict validation components.
+            services.AddOpenIddict()
+                .AddValidation(options =>
+                {
+                    var a = configuration.GetSection("Keycloak")["SetIssuer"];
+                    var b = configuration.GetSection("Keycloak")["ClientId"];
+                    var c = configuration.GetSection("Keycloak")["ClientSecret"];
+                    // Note: the validation handler uses OpenID Connect discovery
+                    // to retrieve the address of the introspection endpoint.
+                    options.SetIssuer(a);
+
+                    // Configure the validation handler to use introspection and register the client
+                    // credentials used when communicating with the remote introspection endpoint.
+                    options.UseIntrospection().SetClientId(b)
+                            .SetClientSecret(c);
+
+                    // Register the System.Net.Http integration.
+                    options.UseSystemNetHttp();
+
+                    // Register the ASP.NET Core host.
+                    options.UseAspNetCore();
+                })
+                ;
+
+            services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+            services.AddAuthorization();
+            //await services.InitData();
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

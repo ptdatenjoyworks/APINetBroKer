@@ -17,6 +17,8 @@ namespace Core.Repositories
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task SaveAsync();
-     
+        Task<IEnumerable<M>> FindByConditionWithoutSaveAsync<M>(Expression<Func<T, bool>> expression, Expression<Func<T, M>> selector, params Expression<Func<T, object>>[] includes);
+
+
     }
 }

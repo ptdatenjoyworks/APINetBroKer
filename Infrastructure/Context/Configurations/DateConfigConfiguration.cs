@@ -5,7 +5,7 @@ using Core.Entities.Enum;
 
 namespace Infrastructure.Context.Configurations
 {
-    internal class DateConfigConfiguration : IEntityTypeConfiguration<DateConfig>
+    public class DateConfigConfiguration : IEntityTypeConfiguration<DateConfig>
     {
         public void Configure(EntityTypeBuilder<DateConfig> builder)
         {
