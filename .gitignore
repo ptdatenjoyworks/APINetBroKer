@@ -24,3 +24,9 @@
 *.txt
 /.vs/ProjectEvaluation/apinetborker.metadata.v6.1
 /.vs/ProjectEvaluation/apinetborker.projects.v6.1
+/APINetBorker/LocalDatabase.db
+/NetBrokerOpenIddict/bin/Debug/net7.0
+/APINetBorker/LocalDatabase.db-wal
+/APINetBorker/LocalDatabase.db-shm
+/NetBrokerOpenIddict/obj
+/NetBrokerDatabase.db
