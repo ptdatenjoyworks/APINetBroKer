@@ -39,7 +39,8 @@ namespace NetBrokerOpenIddict
                         OpenIddictConstants.Permissions.GrantTypes.Password,
 
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
-                        OpenIddictConstants.Permissions.ResponseTypes.Code
+                        OpenIddictConstants.Permissions.ResponseTypes.Code,
+                        OpenIddictConstants.Permissions.Endpoints.Introspection,
                     }
                 }, cancellationToken);
             }

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System;
 using Microsoft.AspNetCore.Authentication;
 using Core.Services.Users;
+using OpenIddict.Abstractions;
 
 namespace NetBrokerOpenIddict.Controllers
 {
@@ -40,7 +41,8 @@ namespace NetBrokerOpenIddict.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, model.Username),
-                    //new Claim("Permissions", validUser.Permission)
+                    new Claim("Permission", validUser.Permission).SetDestinations(OpenIddictConstants.Destinations.AccessToken),
+                    new Claim(OpenIddictConstants.Claims.Role, "admin").SetDestinations(OpenIddictConstants.Destinations.AccessToken)
 
                 };
 

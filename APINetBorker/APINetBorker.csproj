@@ -22,8 +22,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="NLog" Version="5.2.5" />
-    <PackageReference Include="OpenIddict" Version="5.0.0" />
-    <PackageReference Include="OpenIddict.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="OpenIddict" Version="5.0.1" />
+    <PackageReference Include="OpenIddict.AspNetCore" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>

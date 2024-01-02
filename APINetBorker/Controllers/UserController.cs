@@ -1,18 +1,16 @@
 ﻿using AutoMapper;
-using Core.Entities.Enum;
-using Core.Extensions;
 using Core.Models.Requests.User;
 using Core.Models.Response.User;
 using Core.Services;
 using Core.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.WebSockets;
+using OpenIddict.Validation.AspNetCore;
 
 namespace APINetBorker.Controllers
 {
     [Route("api/users")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
     public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;
@@ -26,8 +24,9 @@ namespace APINetBorker.Controllers
             this.mapper = mapper;
             this.logger = logger;
         }
-
+     
         [HttpGet]
+        [ClaimRequirement("Permission", "user")]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {

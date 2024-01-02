@@ -88,13 +88,14 @@ namespace NetBrokerOpenIddict.Controllers
                             Request.HasFormContentType ? Request.Form.ToList() : Request.Query.ToList())
                     });
             }
-
-            // Create a new claims principal
+            var permission = result.Principal.Claims.Where(x => x.Type == "Permission").FirstOrDefault();
+            // Create a new claims principe
             var claims = new List<Claim>
                                 {
                                     // 'subject' claim which is required
                                     new Claim(OpenIddictConstants.Claims.Subject, result.Principal.Identity.Name),
-                                    new Claim("some claim", "some value").SetDestinations(OpenIddictConstants.Destinations.AccessToken)
+                                    new Claim("Permission", permission.Value).SetDestinations(OpenIddictConstants.Destinations.AccessToken),
+                                    new Claim(OpenIddictConstants.Claims.Role, permission.Value)
                                 };
 
             var claimsIdentity = new ClaimsIdentity(claims, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
