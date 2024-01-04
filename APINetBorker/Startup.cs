@@ -76,10 +76,9 @@ namespace APINetBorker
                     // Note: the validation handler uses OpenID Connect discovery
                     // to retrieve the address of the introspection endpoint.
                     options.SetIssuer(configuration.GetSection("Keycloak")["SetIssuer"]);
-                    options.AddAudiences("1f492bf5-8222-4ef1-bc3c-186c2dbd92cb");
                     // Configure the validation handler to use introspection and register the client
                     // credentials used when communicating with the remote introspection endpoint.
-                    options.UseIntrospection().SetClientId(configuration.GetSection("Keycloak")["ClientId"])
+                    options.SetClientId(configuration.GetSection("Keycloak")["ClientId"])
                             .SetClientSecret(configuration.GetSection("Keycloak")["ClientSecret"]);
 
                     // Register the System.Net.Http integration.

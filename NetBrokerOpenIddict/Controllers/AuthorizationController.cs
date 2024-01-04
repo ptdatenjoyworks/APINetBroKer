@@ -8,6 +8,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Core.Constants;
 
 namespace NetBrokerOpenIddict.Controllers
 {
@@ -94,7 +95,8 @@ namespace NetBrokerOpenIddict.Controllers
                                 {
                                     // 'subject' claim which is required
                                     new Claim(OpenIddictConstants.Claims.Subject, result.Principal.Identity.Name),
-                                    new Claim("Permission", permission.Value).SetDestinations(OpenIddictConstants.Destinations.AccessToken),
+                                    new Claim(CustomClaim.Permission, "user:get").SetDestinations(OpenIddictConstants.Destinations.AccessToken),
+                                    new Claim(CustomClaim.Permission, "contract:get").SetDestinations(OpenIddictConstants.Destinations.AccessToken),
                                     new Claim(OpenIddictConstants.Claims.Role, permission.Value)
                                 };
 

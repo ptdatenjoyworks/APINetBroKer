@@ -20,13 +20,13 @@ namespace APINetBorker.Controllers
         public UserController(IUserService userService, IAuthenticationService authenticationService, IMapper mapper, ILoggerManager logger)
         {
             this.userService = userService;
-            this.authenticationService = authenticationService; 
+            this.authenticationService = authenticationService;
             this.mapper = mapper;
             this.logger = logger;
         }
-     
+
         [HttpGet]
-        [ClaimRequirement("Permission", "user")]
+        [PermissionRequirement("admin", "user:all", "user:get")]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
@@ -68,6 +68,7 @@ namespace APINetBorker.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [PermissionRequirement("admin", "user:all", "user:create")]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] UserRegisterRequest request)
         {
@@ -85,6 +86,7 @@ namespace APINetBorker.Controllers
         }
 
         [HttpPut]
+        [PermissionRequirement("admin", "user:all", "user:update")]
         [Route("")]
         public async Task<IActionResult> Update([FromBody] UserRegisterRequest request)
         {
@@ -105,6 +107,7 @@ namespace APINetBorker.Controllers
         }
 
         [HttpDelete]
+        [PermissionRequirement("admin", "user:all", "user:delete")]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

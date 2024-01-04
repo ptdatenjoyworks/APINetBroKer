@@ -57,6 +57,17 @@ namespace Domain.Service.Contracts
             }
         }
 
+        public async Task<ContractReponse> FindContractById(int id)
+        {
+            var contract = await contractRepository.FindById(id);  
+            if (contract != null)
+            {
+                var result = mapper.Map<Contract, ContractReponse>(contract);
+                return result;
+            }
+            return null;
+        }
+
       /*  public async Task<(bool,string)> VerifityContract(int id)
         {
             var contract = await contractRepository.FindById(id);

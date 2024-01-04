@@ -5,12 +5,13 @@ using Core.Services.Contracts;
 using Domain.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OpenIddict.Validation.AspNetCore;
 using System.IO.Compression;
 
 namespace APINetBorker.Controllers
 {
     [Route("api/contractItems")]
-    [AllowAnonymous]
+    [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
     public class ContractItemController : ApiControllerBase
     {
         private readonly IMapper mapper;
@@ -25,6 +26,7 @@ namespace APINetBorker.Controllers
         }
         [HttpGet]
         [Route("")]
+        [PermissionRequirement("admin", "contract-item:all", "contract-item:get")]
         public async Task<IActionResult> GetAll()
         {
             var contracts = await contractItemService.GetAll();
@@ -34,6 +36,7 @@ namespace APINetBorker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("")]
+        [PermissionRequirement("admin", "contract-item:all", "contract-item:create")]
         public async Task<IActionResult> Create([FromForm] ContractItemCreateRequest contractItemRequest)
         {
             var result = await contractItemService.CreateContractItem(contractItemRequest);
@@ -42,6 +45,7 @@ namespace APINetBorker.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [PermissionRequirement("admin", "contract-item:all", "contract-item:delete")]
         public async Task<IActionResult> Delete(int id)
         {
             var a = await contractItemService.VerifityContract(1);
@@ -54,6 +58,7 @@ namespace APINetBorker.Controllers
         [AllowAnonymous]
         [Route("{id}")]
         [Consumes("multipart/form-data")]
+        [PermissionRequirement("admin", "contract-item:all", "contract-item:update")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromForm] ContractItemRequest contractItemRequest)
         {
             contractItemRequest.Id = id;

@@ -1,31 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Core.Constants;
+using System.Linq;
 
 namespace APINetBorker.Controllers
 {
-    public class ClaimRequirementAttribute : TypeFilterAttribute
+    public class PermissionRequirementAttribute : TypeFilterAttribute
     {
-        public ClaimRequirementAttribute(string claimType, string claimValue) : base(typeof(ClaimRequirementFilter))
+        public PermissionRequirementAttribute(params string[] claimValue) : base(typeof(PermissionRequirementFilter))
         {
-            Arguments = new object[] { new Claim(claimType, claimValue) };
+            Arguments = new object[] { claimValue };
         }
     }
 
-    public class ClaimRequirementFilter : IAuthorizationFilter
+    public class PermissionRequirementFilter : IAuthorizationFilter
     {
-        readonly Claim _claim;
+        string[] Permission;
 
-        public ClaimRequirementFilter(Claim claim)
+        public PermissionRequirementFilter(string[] permission)
         {
-            _claim = claim;
+            Permission = permission;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var hasClaim = context.HttpContext.User.Claims.Any(c => c.Type == _claim.Type && c.Value == _claim.Value);
-            var hasClaim2 = context.HttpContext.User.Claims.Any(c => c.Type == "Permission");
-            var a = context.Filters.ToList();
+            var hasClaim = context.HttpContext.User.Claims.Any(c => c.Type == CustomClaim.Permission && Permission.Any(x=>x == c.Value));
             if (!hasClaim)
             {
                 context.Result = new ForbidResult();

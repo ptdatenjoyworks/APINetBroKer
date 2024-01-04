@@ -9,5 +9,6 @@ namespace Core.Services.Contracts
         //Task<bool> Create(ContractRequest contractRequest);
         Task Update(ContractRequest entity);
         //Task<(bool, string)> VerifityContract(int id);
+        Task<ContractReponse> FindContractById(int id);
     }
 }
